@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.Random;
 import java.util.Scanner;
 import javax.websocket.Session;
+import mensaje.MensajeIoT;
 import org.glassfish.tyrus.client.ClientManager;
 
 /**
@@ -31,7 +32,7 @@ public class start {
         int intentosMax = 5;
         
         //RUTA
-        String ruta = "ws://localhost:8080/TESTSERVERMINA/gps";
+        String ruta = "ws://localhost:8080/WebSocketGPS/gps";
         
         ClientGPSVehiculo gps = new ClientGPSVehiculo();
         REST_Transporte rest = new REST_Transporte();
@@ -91,16 +92,17 @@ public class start {
          try{
              x = Integer.valueOf(cantidadS);
          }catch(NumberFormatException e){
-             System.out.println("numero no reconocido, se puso valor establecido de 0");
-             x = 0;
+             System.out.println("numero no reconocido, se puso valor establecido de 9000");
+             x = 9000;
          }
          
          System.out.print("Donde empiezo (Y): ");
+         cantidadS = sc.nextLine();
          try{
              y = Integer.valueOf(cantidadS);
          }catch(NumberFormatException e){
-             System.out.println("numero no reconocido, se puso valor establecido de 0");
-             y = 0;
+             System.out.println("numero no reconocido, se puso valor establecido de 9000");
+             y = 9000;
          }
          
          
@@ -118,7 +120,11 @@ public class start {
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
             Gson gson = builder.create();
-            String msg = gson.toJson(vehiculo);
+            
+            MensajeIoT msj = new MensajeIoT(vehiculo);
+            
+            
+            String msg = gson.toJson(msj);
                     
             vehiculo.getSocket().mandaPosicion(msg, s);
             
@@ -142,14 +148,22 @@ public class start {
     }
     
     public static void moverCarro(Vehiculo v){
-        v.setX(random(v.getX()-100,v.getX()+100));
-        v.setY(random(v.getY()-100,v.getY()+100));
+        v.setX(random(v.getX()-1000,v.getX()+1000));
+        v.setY(random(v.getY()-1000,v.getY()+1000));
     }
     
     
     public static int random(int min, int max){
         Random r = new Random();
-        return r.nextInt(max-min) + min;
+        int ran = r.nextInt(max-min) + min;
+        
+        // Minimos y maximos
+        if(ran<0)
+            ran = 0;
+        if(ran>18500)
+            ran = 18500;
+        
+        return ran;
     }
     
     

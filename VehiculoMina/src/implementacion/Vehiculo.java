@@ -7,7 +7,7 @@ package implementacion;
 
 import conexion.ClientGPSVehiculo;
 import conexion.REST_Transporte;
-import interfaz.IVehiculo;
+import interfaces.IVehiculo;
 
 /**
  *
