@@ -2,6 +2,7 @@
 /Semaforo/build/
 /Mapa/nbproject/private/
 /Mapa/build/
+<<<<<<< Updated upstream
 /MinaDBAPI/nbproject/private/
 /Vehiculo/VehiculoMina/build/
 /Vehiculo/VehiculoMina/nbproject/private/
@@ -20,3 +21,22 @@
 /Estacion Central/Notificaciones/dist/
 /Estacion Central/ControladorMapa/dist/
 /Dominios/ObjetosMina/nbproject/private/
+=======
+/EjemploConsumerConejoNoMaven/nbproject/private/
+>>>>>>> Stashed changes
+/Semaforo/SemaforoIoT/nbproject/private/
+/SemaforoIoT/nbproject/private/
+/Semaforos/SemaforoIoT/nbproject/private/
+/Dominio/ObjetosIoT/nbproject/private/
+/Dominio/ObjetosMina/nbproject/private/
+/Objetos/ObjetosIoT/nbproject/private/
+/Objetos/ObjetosMina/nbproject/private/
+/Objetos/ObjetosIoT/build/
+/Objetos/ObjetosMina/build/
+/Objetos/ObjetosMina/dist/
+/Servicio GPS/GPS/build/
+/Objetos/ObjetosIoT/dist/
+/Vehiculo/Vehiculo/nbproject/private/
+/Vehiculo/Vehiculo/build/
+/Vehiculo/VehiculoIoT/build/
+/Vehiculo/VehiculoIoT/nbproject/private/

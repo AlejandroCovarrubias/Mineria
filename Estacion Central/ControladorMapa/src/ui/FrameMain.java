@@ -30,7 +30,7 @@ public class FrameMain extends javax.swing.JFrame {
     // GPS
     private ClienteGPS gps;
     private Session sesionGPS = null;
-    String rutaGPS = "ws://localhost:8080/WebSocketGPS/gps";
+    String rutaGPS = "ws://localhost:8080/GPS/gps";
     
     // SEMAFOROS
     private ClienteSemaforos semaforos;
