@@ -28,13 +28,15 @@ import transformador.Transformador;
  */
 @ServerEndpoint(value = "/gps")
 public class ServerSocket {
+    
+    private static Session central;
+    private static Session controladorSemaforos;
+    private static List<Session> vehiculos
+            = Collections.synchronizedList(new ArrayList<Session>());
+    
 
     private static List<Session> clients
             = Collections.synchronizedList(new ArrayList<Session>());
-
-    // Buscar como mejor identificar a los clientes
-    private static List<Integer> ids
-            = Collections.synchronizedList(new ArrayList<Integer>());
 
     @OnOpen
     public void onOpen(Session sesion) {
@@ -45,7 +47,13 @@ public class ServerSocket {
     @OnClose
     public void onClose(Session sesion) {
         System.out.println("Close Connection ...");
-//        ids.remove(clients.indexOf(sesion));
+        if(sesion.equals(central))
+            central = null;
+        else if(sesion.equals(controladorSemaforos))
+            controladorSemaforos = null;
+        else if(vehiculos.contains(sesion)){
+            vehiculos.remove(sesion);
+        }
         clients.remove(sesion);
     }
 
@@ -62,8 +70,8 @@ public class ServerSocket {
 
         switch (msg.getTipo()) {
             case REGISTRAR_CENTRAL:
-                ids.add(-1); // Por ahora nada mas se ocupa identificar la central
-                System.out.println("registrado central");
+                central = sesion;
+                System.out.println("GPS: registrado central");
                 break;
 
             case REGISTRAR_SEMAFORO:
@@ -71,8 +79,10 @@ public class ServerSocket {
                 break;
 
             case REGISTRAR_VEHICULO:
-                ids.add(ids.size());
-                System.out.println("registrado vehiculo");
+                synchronized(vehiculos){
+                    vehiculos.add(sesion);
+                }
+                System.out.println("GPS: registrado vehiculo");
                 break;
 
             case ACTUALIZAR_SEMAFORO:
@@ -85,20 +95,16 @@ public class ServerSocket {
                 // Enpaqueta
                 MensajeMina mina = new MensajeMina(veh);
                 // Se lo envia a la central
-                synchronized (clients) {
-                    synchronized (ids) {
-                        // Encuentra a la central
-                        Session central = clients.get(ids.indexOf(-1));
-                        // Convierte a json
-                        msgFinal = gson.toJson(mina);
-                        // Manda
-                        try {
-                            central.getBasicRemote().sendText(msgFinal);
-                            System.out.println("mandado vehiculo actualizado");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                if(central!=null){
+                    // Convierte a json
+                    msgFinal = gson.toJson(mina);
+                    // Manda
+                    try {
+                        central.getBasicRemote().sendText(msgFinal);
+                        System.out.println("GPS: mandado vehiculo actualizado");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } 
                 }
                 break;
         }
