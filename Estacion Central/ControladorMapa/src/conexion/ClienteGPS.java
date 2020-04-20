@@ -16,7 +16,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import mensajeIoT.MensajeIoT;
 import mensajemina.MensajeMina;
-import mensajeIoT.Tipo;
+import mensajeIoT.TipoIoT;
 import objetos.Semaforo;
 import objetos.Vehiculo;
 import ui.FrameMain;
@@ -48,7 +48,7 @@ public class ClienteGPS {
     public void onOpen(Session p) {
         // Manda para registrarse
         try{
-            MensajeIoT msg = new MensajeIoT(Tipo.REGISTRAR_CENTRAL);
+            MensajeIoT msg = new MensajeIoT(TipoIoT.REGISTRAR_CENTRAL);
             
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();

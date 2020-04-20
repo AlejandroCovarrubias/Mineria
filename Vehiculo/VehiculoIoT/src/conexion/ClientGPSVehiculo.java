@@ -13,7 +13,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import mensajeIoT.MensajeIoT;
-import mensajeIoT.Tipo;
+import mensajeIoT.TipoIoT;
 
 /**
  *
@@ -27,7 +27,7 @@ public class ClientGPSVehiculo {
     public void onOpen(Session p) {
         // Manda para registrarse
         try {
-            MensajeIoT msg = new MensajeIoT(Tipo.REGISTRAR_VEHICULO);
+            MensajeIoT msg = new MensajeIoT(TipoIoT.REGISTRAR_VEHICULO);
 
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();

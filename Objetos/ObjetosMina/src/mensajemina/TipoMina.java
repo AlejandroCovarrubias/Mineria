@@ -9,7 +9,7 @@ package mensajemina;
  *
  * @author Home
  */
-public enum Tipo {
+public enum TipoMina {
     SEMAFORO,
     VEHICULO
 }

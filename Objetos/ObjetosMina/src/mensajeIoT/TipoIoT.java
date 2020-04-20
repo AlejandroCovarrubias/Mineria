@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces;
+package mensajeIoT;
 
 /**
  *
  * @author Home
  */
-public interface ISemaforo {
-    
+public enum TipoIoT {
+        REGISTRAR_CENTRAL,
+        REGISTRAR_SEMAFORO,
+        REGISTRAR_VEHICULO,
+        
+        MOVER_VEHICULO,
+        ACTUALIZAR_SEMAFORO
+        
 }

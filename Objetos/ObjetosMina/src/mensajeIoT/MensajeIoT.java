@@ -14,31 +14,31 @@ import interfaces.IVehiculo;
  */
 public class MensajeIoT {
     
-    private Tipo tipo;
+    private TipoIoT tipo;
     private String contenido;
 
     public MensajeIoT() {
     }
 
-    public MensajeIoT(Tipo tipo) {
+    public MensajeIoT(TipoIoT tipo) {
         this.tipo = tipo;
     }
 
     public MensajeIoT(IVehiculo vehiculo) {
-        tipo = Tipo.MOVER_VEHICULO;
+        tipo = TipoIoT.MOVER_VEHICULO;
         contenido = ""+vehiculo.getMatricula()+","+vehiculo.getNombre()+","+vehiculo.getX()+","+vehiculo.getY();
         
     }
 
     public MensajeIoT(ISemaforo semaforo) {
-        tipo = Tipo.ACTUALIZAR_SEMAFORO;
+        tipo = TipoIoT.ACTUALIZAR_SEMAFORO;
     }
 
-    public Tipo getTipo() {
+    public TipoIoT getTipo() {
         return tipo;
     }
 
-    public void setTipo(Tipo tipo) {
+    public void setTipo(TipoIoT tipo) {
         this.tipo = tipo;
     }
 

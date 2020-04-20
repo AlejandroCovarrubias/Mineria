@@ -14,34 +14,34 @@ import objetos.Vehiculo;
  */
 public class MensajeMina {
     
-    private Tipo tipo;
+    private TipoMina tipo;
     private Vehiculo vehiculo;
     private Semaforo semaforo;
 
-    public MensajeMina(Tipo tipo) {
+    public MensajeMina(TipoMina tipo) {
         this.tipo = tipo;
     }
 
     public MensajeMina(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
         semaforo = null;
-        tipo = Tipo.VEHICULO;
+        tipo = TipoMina.VEHICULO;
     }
 
     public MensajeMina(Semaforo semaforo) {
         this.semaforo = semaforo;
         vehiculo = null;
-        tipo = Tipo.SEMAFORO;
+        tipo = TipoMina.SEMAFORO;
     }
 
     public MensajeMina() {
     }
 
-    public Tipo getTipo() {
+    public TipoMina getTipo() {
         return tipo;
     }
 
-    public void setTipo(Tipo tipo) {
+    public void setTipo(TipoMina tipo) {
         this.tipo = tipo;
     }
 

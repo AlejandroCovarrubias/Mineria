@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mensajeIoT;
+package interfaces;
 
 /**
  *
  * @author Home
  */
-public enum Tipo {
-        REGISTRAR_CENTRAL,
-        REGISTRAR_SEMAFORO,
-        REGISTRAR_VEHICULO,
-        
-        MOVER_VEHICULO,
-        ACTUALIZAR_SEMAFORO
-        
+public interface ISemaforo {
+    
+    public String getEstado();
+
+    public int getX();
+
+    public int getY();
 }
