@@ -10,9 +10,11 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import objetos.Transporte;
 
 /**
@@ -20,7 +22,7 @@ import objetos.Transporte;
  *
  * @author Home
  */
-@Path("generic")
+@Path("transporte")
 public class REST_Transporte {
 
     @Context
@@ -49,7 +51,15 @@ public class REST_Transporte {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(Transporte content) {
+    public void putTransporte(Transporte content) {
+        
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response postTransporte(Transporte content){
         System.out.println("Me llego un transporte: "+content);
+        
+        return Response.ok().build();
     }
 }

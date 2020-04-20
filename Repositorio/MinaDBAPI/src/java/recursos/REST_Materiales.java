@@ -20,7 +20,7 @@ import objetos.Material;
  *
  * @author Home
  */
-@Path("generic")
+@Path("material")
 public class REST_Materiales {
 
     @Context

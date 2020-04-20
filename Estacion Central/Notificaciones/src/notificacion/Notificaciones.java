@@ -52,8 +52,7 @@ public class Notificaciones implements INotificaciones{
         Congestion nueva = new Congestion(Integer.parseInt(datos[0]), Integer.parseInt(datos[1]), datos[2], datos[3], datos[4]);
         
         // La manda con REST
-          //rest.registrarCongestion(nueva);
-        System.out.println("congestion mandada a rest!");
+        rest.registrarCongestion(nueva);
     }
     
 }

@@ -145,8 +145,7 @@ public class start {
 
                 Transporte transporte = new Transporte(vehiculoNuevo, vehiculo.getNombre(), vehiculo.getMaterial(), vehiculo.getCantidad(), vehiculo.getMedida());
 
-                //vehiculo.getRest().registrarTransporte(transporte); // No sirve en mi pc :c
-                System.out.println("mandado transporte servidor REST!");
+                vehiculo.getRest().registrarTransporte(transporte);
                 vueltas = 0;
             }
         }
