@@ -1,7 +1,6 @@
 package ui;
 
 import conexion.ClienteGPS;
-import conexion.ClienteSemaforos;
 import java.net.URI;
 import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
@@ -32,10 +31,6 @@ public class FrameMain extends javax.swing.JFrame {
     private Session sesionGPS = null;
     String rutaGPS = "ws://localhost:8080/GPS/gps";
     
-    // SEMAFOROS
-    private ClienteSemaforos semaforos;
-    private Session sesionSemaforos = null;
-    String rutaSemaforos = "";
 
 
     /**
@@ -88,7 +83,6 @@ public class FrameMain extends javax.swing.JFrame {
         
         System.out.println("conectado a gps!");
         
-        // CONEXION A SEMAFORO
         
     }
     
