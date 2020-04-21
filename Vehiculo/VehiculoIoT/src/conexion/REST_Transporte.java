@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * REST_Transporte.java
+ * 
+ * Creado el 20/04/2020 a las 09:37PM
  */
 package conexion;
 
@@ -12,28 +12,33 @@ import javax.ws.rs.core.Response;
 import objetos.Transporte;
 
 /**
- *
- * @author Home
+ * Clase para la comunicación al servidor REST de la base de datos, para 
+ * poder registrar un transporte terminado.
+ * 
+ * @author Equipo Mineria.
  */
 public class REST_Transporte {
     
         private REST_Transporte_JerseyClient client;
 
+        /**
+         * Constructor que inicializa el cliente REST.
+         */
         public REST_Transporte() {
             client = new REST_Transporte_JerseyClient();
         }
         
-        
-        
+        /**
+         * Registra el transporte del parametro.
+         * 
+         * @param transporte Transporte.
+         */
         public void registrarTransporte(Transporte transporte){
             client.postTransporte(transporte);
             System.out.println("Registrado Transporte en REST!");
-        }
-        
-        
-        
-        // Metodos default
-
+        } 
+    
+    // Metodos default
     static class REST_Transporte_JerseyClient {
 
         private WebTarget webTarget;
@@ -61,11 +66,8 @@ public class REST_Transporte {
         public void close() {
             client.close();
         }
-    }
-
-        
-        
-    }
+    }   
+}
     
 
     

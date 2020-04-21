@@ -1,18 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ConsumerSemaforo.java
+ * 
+ * Creado el 20/04/2020 a las 08:59PM
  */
 package semaforo;
 
 /**
- *
- * @author Alejandro Galindo
+ * Clase que consume los estados de los semaforos.
+ * 
+ * @author Equipo Mineria.
  */
 public class ConsumerSemaforo implements Runnable {
 
     private INotificador notificador;
     
+    /**
+     * Constructor que inicializa a sus atributos.
+     * 
+     * @param notificador Notificador.
+     */
     public ConsumerSemaforo(INotificador notificador){
         this.notificador = notificador;
     }

@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ISemaforos.java
+ * 
+ * Creado el 20/04/2020 a las 09:16PM
  */
 package semaforo;
 
@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author Alejandro Galindo
+ * Interfaz que en su implementación define los métodos para notificar y 
+ * actualizar el estado del semáforo.
+ * 
+ * @author Equipo Mineria.
  */
 public abstract class ISemaforo {
     public List<INotificador> notifs = new ArrayList<>();

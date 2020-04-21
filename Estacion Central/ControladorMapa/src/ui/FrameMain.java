@@ -1,3 +1,8 @@
+/**
+ * FrameMain.java
+ * 
+ * Creado el 20/04/2020 a las 7:16PM
+ */
 package ui;
 
 import conexion.ClienteGPS;
@@ -7,23 +12,19 @@ import org.glassfish.tyrus.client.ClientManager;
 import interfaz.INotificaciones;
 import notificacion.Notificaciones;
 
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author Alejandro Galindo
+ * Frame principal donde se despliega el mapa, se puede cambiar el estado 
+ * de los semáforos y manda las ubicaciones de los vehículos al sistema de 
+ * notificaciones.
+ * 
+ * @author Equipo Mineria.
  */
 public class FrameMain extends javax.swing.JFrame {
     
     // Interfaces
     private INotificaciones notificaciones;
-    // interfaz mapa
     
+    // interfaz mapa
     private PanelMapa pnl;
     
     // GPS
@@ -34,7 +35,7 @@ public class FrameMain extends javax.swing.JFrame {
 
 
     /**
-     * Creates new form Mapa
+     * Contrusctor que crea el Frame Principal.
      */
     public FrameMain() {
         initComponents();
@@ -50,17 +51,17 @@ public class FrameMain extends javax.swing.JFrame {
         // Inicializa interfaces
         notificaciones = new Notificaciones();
         // interfaz mapa
-        
         conectar();
         
     }
     
+    /**
+     * Conecta al servicio GPS.
+     */
     private void conectar(){
         System.out.println("Conectando a servicio GPS...");
         int intentos = 0;
         int intentosMax = 5;
-        
-        
         
         gps = new ClienteGPS(this);
         sesionGPS = null;
@@ -75,17 +76,16 @@ public class FrameMain extends javax.swing.JFrame {
                 System.out.println("Error conectando al gps, intentando "+(intentosMax-intentos)+" veces mas");
             }
         }
-        
         if(intentos==intentosMax || sesionGPS == null){
             System.out.println("No se pudo conectar...");
             System.exit(1);
         }
-        
         System.out.println("conectado a gps!");
-        
-        
     }
     
+    /**
+     * Procesa las ubicaciones.
+     */
     public void procesarUbicaciones(){
         // Actualiza el mapa
         

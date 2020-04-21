@@ -1,13 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Controlador.java
+ * 
+ * Creado el 20/04/2020 a las 09:01PM
  */
 package semaforo;
 
 /**
- *
- * @author Alejandro Galindo
+ * Controlador del semaforo.
+ * 
+ * @author Equipo Mineria.
  */
 public class Controlador {
 

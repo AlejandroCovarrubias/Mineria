@@ -1,20 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * TipoIoT.java
+ * 
+ * Creado el 20/04/2020 a las 07:48PM
  */
 package mensajeIoT;
 
 /**
- *
- * @author Home
+ * Enumerador utilizado por MensajeIoT para poder diferenciarlos y saber qué 
+ * hacer con ellos.
+ * 
+ * @author Equipo Mineria.
  */
 public enum TipoIoT {
         REGISTRAR_CENTRAL,
         REGISTRAR_SEMAFORO,
         REGISTRAR_VEHICULO,
-        
         MOVER_VEHICULO,
         ACTUALIZAR_SEMAFORO
-        
 }

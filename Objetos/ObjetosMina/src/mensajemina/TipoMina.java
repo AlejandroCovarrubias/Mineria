@@ -1,13 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * TipoMina.java
+ * 
+ * Creado el 20/04/2020 a las 08:02PM
  */
 package mensajemina;
 
 /**
- *
- * @author Home
+ * Enumerador utilizado por MensajeMina para poder diferenciarlos y saber qué 
+ * hacer con ellos.
+ * 
+ * @author Equipo Mineria.
  */
 public enum TipoMina {
     SEMAFORO,

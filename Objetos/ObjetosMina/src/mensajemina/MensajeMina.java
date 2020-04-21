@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * MensajeMina.java
+ * 
+ * Creado el 20/04/2020 a las 07:53PM
  */
 package mensajemina;
 
@@ -9,8 +9,10 @@ import objetos.Semaforo;
 import objetos.Vehiculo;
 
 /**
- *
- * @author Home
+ * Mensaje que se manda a través de del websocket del GPS y contiene o un 
+ * vehículo o un semáforo para utilizar en la estación central.
+ * 
+ * @author Equipo Mineria.
  */
 public class MensajeMina {
     
@@ -18,49 +20,94 @@ public class MensajeMina {
     private Vehiculo vehiculo;
     private Semaforo semaforo;
 
+    /**
+     * Constructor para inicializar con el tipo mina.
+     * 
+     * @param tipo Tipo de la mina.
+     */
     public MensajeMina(TipoMina tipo) {
         this.tipo = tipo;
     }
 
+    /**
+     * Constructor para inicializar con el vehiculo.
+     * 
+     * @param vehiculo Vehiculo.
+     */
     public MensajeMina(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
         semaforo = null;
         tipo = TipoMina.VEHICULO;
     }
 
+    /**
+     * Constructor para inicializar con el semaforo.
+     * 
+     * @param semaforo Semaforo.
+     */
     public MensajeMina(Semaforo semaforo) {
         this.semaforo = semaforo;
         vehiculo = null;
         tipo = TipoMina.SEMAFORO;
     }
 
+    /**
+     * Constructor por omision.
+     */
     public MensajeMina() {
     }
 
+    /**
+     * Regresa el tipo de mina.
+     * 
+     * @return Tipo de mina.
+     */
     public TipoMina getTipo() {
         return tipo;
     }
 
+    /**
+     * Establece el tipo de mina.
+     * 
+     * @param tipo Tipo mina.
+     */
     public void setTipo(TipoMina tipo) {
         this.tipo = tipo;
     }
 
+    /**
+     * Regresa el vehiculo.
+     * 
+     * @return Vehiculo.
+     */
     public Vehiculo getVehiculo() {
         return vehiculo;
     }
 
+    /**
+     * Establece el vehiculo.
+     * 
+     * @param vehiculo Vehiculo.
+     */
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
     }
 
+    /**
+     * Regresa el semaforo.
+     * 
+     * @return Semaforo.
+     */
     public Semaforo getSemaforo() {
         return semaforo;
     }
 
+    /**
+     * Establece el semaforo.
+     * 
+     * @param semaforo Semaforo.
+     */
     public void setSemaforo(Semaforo semaforo) {
         this.semaforo = semaforo;
     }
-    
-    
-    
 }

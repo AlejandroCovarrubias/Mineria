@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Notificaciones.java
+ * 
+ * Creado el 20/04/2020 a las 07:26PM
  */
 package notificacion;
 
@@ -14,8 +14,11 @@ import objetos.Semaforo;
 import objetos.Vehiculo;
 
 /**
- *
- * @author Home
+ * Implementación de la interfaz, establece metodo para saber si hay una 
+ * congestión basado en los vehículos y semáforos actuales. Utiliza una clase 
+ * cliente REST para registrar en caso encontrado.
+ * 
+ * @author Equipo Mineria.
  */
 public class Notificaciones implements INotificaciones{
 
@@ -25,8 +28,13 @@ public class Notificaciones implements INotificaciones{
         rest = new ClienteREST_Notificaciones();
     }
     
-    
-    
+    /**
+     * Obtiene las congestiones.
+     * 
+     * @param vehiculos Lista de vehiculos.
+     * @param semaforos Lista de semaforos.
+     * @return Lista de congestiones.
+     */
     @Override
     public List<String> obtenerCongestiones(List<Vehiculo> vehiculos, List<Semaforo> semaforos) {
         List<String> congestiones = new ArrayList<>();
@@ -40,10 +48,11 @@ public class Notificaciones implements INotificaciones{
         return congestiones;
     }
     
-    
-
-    
-
+    /**
+     * Registra una congestion.
+     * 
+     * @param msg Mensaje
+     */
     @Override
     public void registrarCongestion(String msg) {
         String[] datos = msg.split(",");
@@ -54,5 +63,4 @@ public class Notificaciones implements INotificaciones{
         // La manda con REST
         rest.registrarCongestion(nueva);
     }
-    
 }

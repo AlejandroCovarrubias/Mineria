@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ClienteGPS.java
+ * 
+ * Creado el 20/04/2020 a las 7:10PM
  */
 package conexion;
 
@@ -22,8 +22,9 @@ import objetos.Vehiculo;
 import ui.FrameMain;
 
 /**
- *
- * @author Home
+ * Clase para la conexión al WebSocket del servidor de GPS.
+ * 
+ * @author Equipo Mineria.
  */
 @ClientEndpoint
 public class ClienteGPS {
@@ -33,6 +34,10 @@ public class ClienteGPS {
     private List<Vehiculo> vehiculos;
     private List<Semaforo> semaforos;
 
+    /**
+     * Constructor para inicializar variables.
+     * @param actualizable Frame principal.
+     */
     public ClienteGPS(FrameMain actualizable) {
         this.actualizable = actualizable;
         count = 0;
@@ -40,10 +45,10 @@ public class ClienteGPS {
         semaforos = new ArrayList<>();
     }
     
-    
-    
-    //Websocket
-    
+    /**
+     * Registra en central.
+     * @param p Sesion.
+     */
     @OnOpen
     public void onOpen(Session p) {
         // Manda para registrarse
@@ -64,6 +69,10 @@ public class ClienteGPS {
         }
     }
     
+    /**
+     * Trata el mensaje.
+     * @param message Mensaje.
+     */
     @OnMessage
     public void onMessage(String message) {
         // Desencripta
@@ -110,23 +119,35 @@ public class ClienteGPS {
         actualizable.procesarUbicaciones();
         
     }
-
+    
+    /**
+     * Regresa el contador.
+     * @return Contador.
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     * Establece el contador.
+     * @param count Contador.
+     */
     public void setCount(int count) {
         this.count = count;
     }
-
+    
+    /**
+     * Regresa el vehiculo.
+     * @return Vehiculo.
+     */
     public List<Vehiculo> getVehiculos() {
         return vehiculos;
     }
-
+     /**
+      * Regresa la lista de semaforos.
+      * @return Lista de semaforos.
+      */
     public List<Semaforo> getSemaforos() {
         return semaforos;
     }
-    
-    
-    
 }

@@ -1,13 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * IVehiculo.java
+ * 
+ * Creada el 20/04/2020 a las 09:28PM
  */
 package interfaz;
 
 /**
- *
- * @author Home
+ * Interfaz que establece lo necesario para un vehículo y su transporte.
+ * 
+ * @author Equipo Mineria.
  */
 public interface IVehiculo {
     
@@ -24,6 +25,5 @@ public interface IVehiculo {
     public int getX();
 
     public int getY();
-    
     
 }

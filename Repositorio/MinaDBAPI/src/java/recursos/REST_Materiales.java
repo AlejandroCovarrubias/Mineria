@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * REST_Materiales.java
+ * 
+ * Creado el 20/04/2020 a las 08:51PM
  */
 package recursos;
 
@@ -18,7 +18,7 @@ import objetos.Material;
 /**
  * REST Web Service
  *
- * @author Home
+ * @author Equipo Mineria.
  */
 @Path("material")
 public class REST_Materiales {

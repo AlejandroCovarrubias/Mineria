@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * INotificaciones.java
+ * 
+ * Creada el 20/04/2020 a las 07:25PM
  */
 package interfaz;
 
@@ -10,8 +10,9 @@ import objetos.Semaforo;
 import objetos.Vehiculo;
 
 /**
- *
- * @author Home
+ * Interfaz del servicio de notificaciones.
+ * 
+ * @author Equipo Mineria.
  */
 public interface INotificaciones {
     

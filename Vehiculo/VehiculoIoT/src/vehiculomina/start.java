@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * start.java
+ * 
+ * Creado el 20/04/2020 a las 09:26PM
  */
 package vehiculomina;
 
@@ -20,8 +20,9 @@ import objetos.Transporte;
 import org.glassfish.tyrus.client.ClientManager;
 
 /**
- *
- * @author Home
+ * Clase para probar el programa.
+ * 
+ * @author Equipo Mineria.
  */
 public class start {
 

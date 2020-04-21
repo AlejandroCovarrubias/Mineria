@@ -1,19 +1,20 @@
+/**
+ * PanelMapa.java
+ * 
+ * Creado el 20/04/2020 a las 07:21PM
+ */
 package ui;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author Alejandro Galindo
+ * Panel en la interfaz gráfica que muestra de manera gráfica el mapa de la 
+ * mina con los vehículos y semáforos.
+ * 
+ * @author Equipo Mineria.
  */
 public class PanelMapa extends javax.swing.JPanel {
 
     /**
-     * Creates new form PanelMapa
+     * Constructor que inicializa el panel
      */
     public PanelMapa() {
         initComponents();

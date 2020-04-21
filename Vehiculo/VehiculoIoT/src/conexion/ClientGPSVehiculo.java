@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ClientGPSVehiculo.java
+ * 
+ * Creado el 20/04/2020 a las 09:21PM
  */
 package conexion;
 
@@ -16,13 +16,18 @@ import mensajeIoT.MensajeIoT;
 import mensajeIoT.TipoIoT;
 
 /**
- *
- * @author Home
+ * Clase para la conexión al WebSocket del servidor de GPS.
+ * 
+ * @author Equipo Mineria.
  */
 @ClientEndpoint
 public class ClientGPSVehiculo {
 
-    //Websocket
+    /**
+     * Abre la sesion.
+     * 
+     * @param p Sesion.
+     */
     @OnOpen
     public void onOpen(Session p) {
         // Manda para registrarse
@@ -41,11 +46,22 @@ public class ClientGPSVehiculo {
         }
     }
 
+    /**
+     * OnMessage.
+     * 
+     * @param message Mensaje.
+     */
     @OnMessage
     public void onMessage(String message) {
 
     }
 
+    /**
+     * Manda la posicion.
+     * 
+     * @param message Mensaje.
+     * @param p Sesion.
+     */
     public void mandaPosicion(String message, Session p) {
         try {
             p.getBasicRemote().sendText(message);

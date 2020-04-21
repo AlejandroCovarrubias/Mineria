@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ClienteREST_Noticicaciones.java
+ * 
+ * Creado el 20/04/2020 a las 07:23PM
  */
 package conexion;
 
@@ -14,8 +14,10 @@ import objetos.Congestion;
 
 
 /**
- *
- * @author Home
+ * Clase para la comunicación al servidor REST de la base de datos, para poder 
+ * registrar una congestión detectada.
+ * 
+ * @author Equipo Mineria.
  */
 public class ClienteREST_Notificaciones {
     
@@ -30,10 +32,7 @@ public class ClienteREST_Notificaciones {
         System.out.println("Registrada la congestion en REST!");
     }
     
-    
-    
     // Metodos default
-
     static class REST_Congestion_JerseyClient {
 
         private WebTarget webTarget;
@@ -62,8 +61,4 @@ public class ClienteREST_Notificaciones {
             client.close();
         }
     }
-    
-    
-
-    
 }
