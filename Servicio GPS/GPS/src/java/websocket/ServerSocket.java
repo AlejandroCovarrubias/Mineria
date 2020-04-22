@@ -7,6 +7,7 @@ package websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import congestiones.ManejadorCongestiones;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import mensajeIoT.MensajeIoT;
 import mensajemina.MensajeMina;
+import objetos.Congestion;
+import objetos.Semaforo;
 import objetos.Vehiculo;
 import transformador.Transformador;
 
@@ -38,6 +41,8 @@ public class ServerSocket {
     private static List<Session> clients
             = Collections.synchronizedList(new ArrayList<Session>());
 
+    private ManejadorCongestiones congestiones = new ManejadorCongestiones();
+    
     @OnOpen
     public void onOpen(Session sesion) {
         System.out.println("Open Connection ...");
@@ -66,6 +71,7 @@ public class ServerSocket {
         Gson gson = builder.create();
 
         String msgFinal;
+        MensajeMina mina;
         MensajeIoT msg = gson.fromJson(message, MensajeIoT.class);
 
         switch (msg.getTipo()) {
@@ -75,7 +81,8 @@ public class ServerSocket {
                 break;
 
             case REGISTRAR_SEMAFORO:
-
+                controladorSemaforos = sesion;
+                System.out.println("GPS: registrado controlador semaforos");
                 break;
 
             case REGISTRAR_VEHICULO:
@@ -85,15 +92,38 @@ public class ServerSocket {
                 System.out.println("GPS: registrado vehiculo");
                 break;
 
-            case ACTUALIZAR_SEMAFORO:
-
+                // ControladorSemaforo > Central
+            case ACTUALIZAR_SEMAFORO_CONTROLADOR:
+                // Convierte el semaforo IoT a uno de mina
+                Semaforo sem = Transformador.transformarSemaforo(msg.getContenido());
+                // Agrega al manejador de congestiones
+                congestiones.agregaSemaforo(sem);
+                // Enpaqueta
+                mina = new MensajeMina(sem);
+                // Se lo envia a la central
+                if(central!=null){
+                    // Convierte a json
+                    msgFinal = gson.toJson(mina);
+                    // Manda
+                    try {
+                        central.getBasicRemote().sendText(msgFinal);
+                        System.out.println("GPS: mandado semaforo actualizado");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } 
+                }else{
+                    System.out.println("GPS: No se econtro la central para mandar semaforo");
+                }
                 break;
 
+                // Vehiculo > Central
             case MOVER_VEHICULO:
                 // Convierte el vehiculo IoT a uno de mina
                 Vehiculo veh = Transformador.transformarVehiculo(msg.getContenido());
+                // Agrega al manejador de congestiones
+                congestiones.agregaVehiculo(veh);
                 // Enpaqueta
-                MensajeMina mina = new MensajeMina(veh);
+                mina = new MensajeMina(veh);
                 // Se lo envia a la central
                 if(central!=null){
                     // Convierte a json
@@ -105,13 +135,57 @@ public class ServerSocket {
                     } catch (IOException e) {
                         e.printStackTrace();
                     } 
+                }else{
+                    System.out.println("GPS: No se econtro la central para mandar vehiculo");
+                }
+                break;
+                
+                // Central > ControladorSemaforo
+            case ACTUALIZAR_SEMAFORO_CENTRAL:
+                msgFinal = msg.getContenido();
+                // Se lo envia a controlador semaforos
+                if(controladorSemaforos!=null){
+                    // Manda
+                    try {
+                        controladorSemaforos.getBasicRemote().sendText(msgFinal);
+                        System.out.println("GPS: mandado cambio de estados de semaforo");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } 
+                }else{
+                    System.out.println("GPS: No se econtro el controlador de semaforos para mandar cambio de estado");
                 }
                 break;
         }
+        
+        //Revisa congestiones
+        tratarCongestiones(gson);
     }
 
     @OnError
     public void onError(Throwable e) {
         e.printStackTrace();
+    }
+    
+    private void tratarCongestiones(Gson gson){
+        Congestion cong = congestiones.revisaCongestiones();
+        if(cong!=null){
+            // Enpaqueta
+                MensajeMina mina = new MensajeMina(cong);
+                // Se lo envia a la central
+                if(central!=null){
+                    // Convierte a json
+                    String msgFinal = gson.toJson(mina);
+                    // Manda
+                    try {
+                        central.getBasicRemote().sendText(msgFinal);
+                        System.out.println("GPS: mandado congestion");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } 
+                }else{
+                    System.out.println("GPS: No se econtro la central para mandar congestion");
+                }
+        }
     }
 }

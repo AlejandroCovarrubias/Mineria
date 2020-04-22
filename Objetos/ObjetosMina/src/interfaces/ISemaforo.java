@@ -12,6 +12,8 @@ package interfaces;
  */
 public interface ISemaforo {
     
+    public String getIdentificador();
+    
     public String getEstado();
 
     public int getX();

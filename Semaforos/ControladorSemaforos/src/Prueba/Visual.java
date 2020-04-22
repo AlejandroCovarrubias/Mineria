@@ -44,6 +44,8 @@ public class Visual extends javax.swing.JFrame {
         paneles.add(pnl2);
         paneles.add(pnl3);
         
+        
+        
         for (int i = 0; i < semaforos.size(); i++) {
             VisualSemaforo visual = new VisualSemaforo(producer, semaforos.get(i));
             visuales.add(visual);

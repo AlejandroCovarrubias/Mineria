@@ -3,13 +3,12 @@
  * 
  * Creado el 20/04/2020 a las 09:26PM
  */
-package vehiculomina;
+package vehiculoiot;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import conexion.ClientGPSVehiculo;
 import conexion.REST_Transporte;
-import implementacion.Vehiculo;
 import java.net.URI;
 import java.util.Random;
 import java.util.Scanner;

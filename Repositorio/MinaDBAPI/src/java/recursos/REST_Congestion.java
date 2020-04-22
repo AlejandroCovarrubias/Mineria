@@ -58,7 +58,7 @@ public class REST_Congestion {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postTransporte(Congestion content){
-        System.out.println("Me llego una congestion: "+content);
+        System.out.println("REST: Me llego una congestion: "+content);
         
         return Response.ok().build();
     }

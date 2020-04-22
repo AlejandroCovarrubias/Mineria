@@ -58,7 +58,7 @@ public class REST_Transporte {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postTransporte(Transporte content){
-        System.out.println("Me llego un transporte: "+content);
+        System.out.println("REST: Me llego un transporte: "+content);
         
         return Response.ok().build();
     }

@@ -27,6 +27,23 @@ public class Transformador {
     public static Semaforo transformarSemaforo(String semaforo) {
         Semaforo nuevo = new Semaforo();
 
+        // Obtiene datos
+        String[] datos = semaforo.split(",");
+        // identificador, estado, x, y
+        
+        // Pasa datos
+        nuevo.setIdentificador(datos[0]);
+        nuevo.setEstado(datos[1]);
+        
+        int rangoViejo = (maxViejo - minViejo);
+        int rangoNuevo = (maxNuevo - minNuevo);
+
+        int x = (((Integer.parseInt(datos[2]) - minViejo) * rangoNuevo) / rangoViejo) + minNuevo;
+        int y = (((Integer.parseInt(datos[3]) - minViejo) * rangoNuevo) / rangoViejo) + minNuevo;
+        
+        nuevo.setX(x);
+        nuevo.setY(y);
+        
         // Pasa datos y esas weas
         return nuevo;
     }

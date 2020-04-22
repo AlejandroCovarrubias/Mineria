@@ -35,7 +35,8 @@ public class Controlador implements Runnable {
                         wait(timeOut);
 
                         //Si no fue notificado, cambia de estado
-                        if((System.currentTimeMillis() - tBefore) > timeOut){
+                        long t = (System.currentTimeMillis() - tBefore);
+                        if(t >= timeOut){
                             semaforo.establecerEstado("AMARILLO");
                         }
                     } else if (semaforo.obtenerEstado().equals("AMARILLO")) {
@@ -47,7 +48,8 @@ public class Controlador implements Runnable {
                         wait(timeOut);
 
                         //Si no fue notificado, cambia de estado
-                        if((System.currentTimeMillis() - tBefore) > timeOut){
+                        long t = (System.currentTimeMillis() - tBefore);
+                        if(t >= timeOut){
                             semaforo.establecerEstado("ROJO");
                         }
                     } else if (semaforo.obtenerEstado().equals("ROJO")) {
@@ -59,7 +61,8 @@ public class Controlador implements Runnable {
                         wait(timeOut);
 
                         //Si no fue notificado, cambia de estado
-                        if((System.currentTimeMillis() - tBefore) > timeOut){
+                        long t = (System.currentTimeMillis() - tBefore);
+                        if(t >= timeOut){
                             semaforo.establecerEstado("VERDE");
                         }
                     }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.websocket.Session;
+import mensajeIoT.MensajeIoT;
 import org.glassfish.tyrus.client.ClientManager;
 
 /**
@@ -46,6 +47,24 @@ public class Routeador {
         
         String[] split = msg.split(",");
         
+        if(isConectado()){
+            System.out.println("[R] Mandando a GPS");
+            // Crea un objeto IoT para mandar
+            // Las ubicaciones las deberia tener guardadas en alguna parte segun
+            int x = 0;
+            int y = 0;
+            switch(split[0]){
+                case "S1": x=5000;y=4000;break;
+                case "S2": x=7070;y=2000;break;
+                case "S3": x=1000;y=5070;break;
+            }
+            SemaforoIoT semaforo = new SemaforoIoT(split[0],split[1],x,y);
+            //Empaqueta
+            MensajeIoT msgFinal = new MensajeIoT(semaforo);
+            //Enviar mensaje al GPS
+            gps.mandarSemaforo(msgFinal,sesionGPS);
+        }
+        
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -53,9 +72,7 @@ public class Routeador {
             }
         });
         
-        if(isConectado()){
-            //Enviar mensaje al GPS
-        }
+        
     }
     
     public void encolar(String id, String msg){
@@ -80,7 +97,7 @@ public class Routeador {
         int intentos = 0;
         int intentosMax = 5;
         
-        gps = new ClienteGPSWebSocket();
+        gps = new ClienteGPSWebSocket(producer);
         sesionGPS = null;
         
         while(intentos<intentosMax){

@@ -5,9 +5,8 @@
  */
 package interfaz;
 
-import java.util.List;
-import objetos.Semaforo;
-import objetos.Vehiculo;
+import objetos.Congestion;
+
 
 /**
  * Interfaz del servicio de notificaciones.
@@ -16,8 +15,6 @@ import objetos.Vehiculo;
  */
 public interface INotificaciones {
     
-    public List<String> obtenerCongestiones(List<Vehiculo> vehiculos,List<Semaforo> semaforos);
-    
-    public void registrarCongestion(String msg);
+    public void registrarCongestion(Congestion g);
     
 }

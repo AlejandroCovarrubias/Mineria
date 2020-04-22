@@ -8,6 +8,7 @@ package vehiculoiot;
 import conexion.ClientGPSVehiculo;
 import conexion.REST_Transporte;
 import interfaces.IVehiculo;
+import java.util.Objects;
 import objetos.Material;
 
 /**
@@ -221,4 +222,31 @@ public class Vehiculo implements IVehiculo {
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + Objects.hashCode(this.matricula);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehiculo other = (Vehiculo) obj;
+        if (!Objects.equals(this.matricula, other.matricula)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

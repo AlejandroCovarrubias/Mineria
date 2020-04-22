@@ -5,6 +5,8 @@
  */
 package objetos;
 
+import java.util.Objects;
+
 /**
  * Representa un semaforo.
  * 
@@ -106,5 +108,31 @@ public class Semaforo {
      */
     public void setY(int y) {
         this.y = y;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.identificador);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Semaforo other = (Semaforo) obj;
+        if (!Objects.equals(this.identificador, other.identificador)) {
+            return false;
+        }
+        return true;
+    
     }
 }

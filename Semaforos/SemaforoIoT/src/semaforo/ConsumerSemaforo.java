@@ -53,7 +53,7 @@ public class ConsumerSemaforo implements Runnable {
             Channel channel = connection.createChannel();
             
             channel.queueDeclare(identificador, false, false, false, null);
-            System.out.println("[*] Semaforo " + identificador + " sperando peticiones de cambio de estado.");     
+            System.out.println("[*] Semaforo " + identificador + " esperando peticiones de cambio de estado.");     
             
             // Llegara mensaje con formato >
             // ESTADOACOLOCAR

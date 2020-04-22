@@ -50,7 +50,8 @@ public class MensajeIoT {
      * @param semaforo Semaforo.
      */
     public MensajeIoT(ISemaforo semaforo) {
-        tipo = TipoIoT.ACTUALIZAR_SEMAFORO;
+        tipo = TipoIoT.ACTUALIZAR_SEMAFORO_CONTROLADOR;
+        contenido = ""+semaforo.getIdentificador()+","+semaforo.getEstado()+","+semaforo.getX()+","+semaforo.getY();
     }
 
     /**

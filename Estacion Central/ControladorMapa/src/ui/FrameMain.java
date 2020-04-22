@@ -90,10 +90,9 @@ public class FrameMain extends javax.swing.JFrame {
         // Actualiza el mapa
         
         // Revisa congestiones
-        // De prueba nomas cuando son 5
-        if(gps.getCount()==5){
-            notificaciones.obtenerCongestiones(gps.getVehiculos(), gps.getSemaforos());
-            gps.setCount(0);
+        if(gps.getCongestion()!=null){
+            notificaciones.registrarCongestion(gps.getCongestion());
+            gps.setCongestion(null);
         }
     }
 
@@ -136,6 +135,11 @@ public class FrameMain extends javax.swing.JFrame {
         jLabel1.setText("MINERIA");
 
         jButton1.setText("mandar algo al semaforos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -181,6 +185,12 @@ public class FrameMain extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        gps.cambiarEstado("S1,ROJO", sesionGPS);
+        gps.cambiarEstado("S2,ROJO", sesionGPS);
+        gps.cambiarEstado("S3,ROJO", sesionGPS);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

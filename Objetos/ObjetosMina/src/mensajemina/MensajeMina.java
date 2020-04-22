@@ -5,12 +5,13 @@
  */
 package mensajemina;
 
+import objetos.Congestion;
 import objetos.Semaforo;
 import objetos.Vehiculo;
 
 /**
  * Mensaje que se manda a través de del websocket del GPS y contiene o un 
- * vehículo o un semáforo para utilizar en la estación central.
+ * vehículo, semáforo o congestión para utilizar en la estación central.
  * 
  * @author Equipo Mineria.
  */
@@ -19,6 +20,7 @@ public class MensajeMina {
     private TipoMina tipo;
     private Vehiculo vehiculo;
     private Semaforo semaforo;
+    private Congestion congestion;
 
     /**
      * Constructor para inicializar con el tipo mina.
@@ -37,6 +39,7 @@ public class MensajeMina {
     public MensajeMina(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
         semaforo = null;
+        congestion = null;
         tipo = TipoMina.VEHICULO;
     }
 
@@ -48,8 +51,18 @@ public class MensajeMina {
     public MensajeMina(Semaforo semaforo) {
         this.semaforo = semaforo;
         vehiculo = null;
+        congestion = null;
         tipo = TipoMina.SEMAFORO;
     }
+
+    public MensajeMina(Congestion congestion) {
+        this.congestion = congestion;
+        semaforo = null;
+        vehiculo = null;
+        tipo = TipoMina.CONGESTION;
+    }
+    
+    
 
     /**
      * Constructor por omision.
@@ -110,4 +123,14 @@ public class MensajeMina {
     public void setSemaforo(Semaforo semaforo) {
         this.semaforo = semaforo;
     }
+
+    public Congestion getCongestion() {
+        return congestion;
+    }
+
+    public void setCongestion(Congestion congestion) {
+        this.congestion = congestion;
+    }
+    
+    
 }

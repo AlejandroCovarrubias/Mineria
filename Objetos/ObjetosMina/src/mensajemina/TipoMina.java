@@ -13,5 +13,6 @@ package mensajemina;
  */
 public enum TipoMina {
     SEMAFORO,
-    VEHICULO
+    VEHICULO,
+    CONGESTION
 }

@@ -14,8 +14,10 @@ import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import mensajeIoT.*;
+import mensajeIoT.MensajeIoT;
+import mensajeIoT.TipoIoT;
 import mensajemina.MensajeMina;
+import objetos.Congestion;
 import objetos.Semaforo;
 import objetos.Vehiculo;
 import ui.FrameMain;
@@ -32,6 +34,7 @@ public class ClienteGPS {
     private FrameMain actualizable;
     private List<Vehiculo> vehiculos;
     private List<Semaforo> semaforos;
+    private Congestion congestion;
 
     /**
      * Constructor para inicializar variables.
@@ -106,6 +109,11 @@ public class ClienteGPS {
                     semaforos.add(msg.getSemaforo());
                 }
                 break;
+            case CONGESTION:
+                // Guarda la congestion
+                congestion = msg.getCongestion();
+                break;
+                
         }
 
         // Por ahora nada mas imprime para probar que sirve
@@ -114,8 +122,26 @@ public class ClienteGPS {
         
         
         // Checa si hay congestiones
-        count++;
         actualizable.procesarUbicaciones();
+    }
+    
+    public void cambiarEstado(String semaforo, Session p){
+        // Crea un mensaje IoT para mandar
+        MensajeIoT msg = new MensajeIoT(TipoIoT.ACTUALIZAR_SEMAFORO_CENTRAL);
+        msg.setContenido(semaforo);
+        
+        // Convierte a JSon
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
+
+        String send = gson.toJson(msg);
+        try{
+            p.getBasicRemote().sendText(send);
+            System.out.println("Mandado cambio de semaforos a GPS.");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
         
     }
     
@@ -149,4 +175,22 @@ public class ClienteGPS {
     public List<Semaforo> getSemaforos() {
         return semaforos;
     }
+
+    public FrameMain getActualizable() {
+        return actualizable;
+    }
+
+    public void setActualizable(FrameMain actualizable) {
+        this.actualizable = actualizable;
+    }
+
+    public Congestion getCongestion() {
+        return congestion;
+    }
+
+    public void setCongestion(Congestion congestion) {
+        this.congestion = congestion;
+    }
+    
+    
 }
