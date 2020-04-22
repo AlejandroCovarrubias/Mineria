@@ -18,6 +18,7 @@ public abstract class ISemaforo {
     public List<INotificador> notifs = new ArrayList<>();
     abstract void notificar(String estado);
     abstract void iniciarCiclo();
+    abstract void establecerEstado(String estado);
     abstract String obtenerEstado();
     void agregarNotificador(INotificador notificador){
         notifs.add(notificador);

@@ -26,15 +26,6 @@ public class Semaforo extends ISemaforo{
     }
 
     /**
-     * Establece el estado del semaforo.
-     * 
-     * @param estado Estado del semaforo.
-     */
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    /**
      * Regresa el codigo Hash del semaforo en cuestion.
      * 
      * @return Codigo Hash.
@@ -97,6 +88,17 @@ public class Semaforo extends ISemaforo{
      */
     @Override
     void iniciarCiclo() {
+    }
+    
+    /**
+     * Establece el estado del semaforo.
+     * 
+     * @param estado Estado del semaforo.
+     */
+    public void establecerEstado(String estado) {
+        this.estado = estado;
+        System.out.println("[S] Cambiando a... " + estado);
+        System.out.println("-----------------------------------");
     }
 
     /**

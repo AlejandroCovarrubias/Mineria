@@ -16,13 +16,16 @@ public class Notificador implements INotificador {
 
     private ISemaforo semaforo;
     
+    private ProducerSemaforo producer;
+    
     /**
      * Constructor que inicializa a su atributo Semaforo.
      * 
      * @param semaforo Semaforo.
      */
-    public Notificador(ISemaforo semaforo) {
+    public Notificador(ISemaforo semaforo, ProducerSemaforo producer) {
         this.semaforo = semaforo;
+        this.producer = producer;
     }
 
     /**
@@ -32,7 +35,7 @@ public class Notificador implements INotificador {
      */
     @Override
     public void notificar(String estado) {
-        
+        producer.encolarEstado(estado);
     }
 
     /**
@@ -42,7 +45,6 @@ public class Notificador implements INotificador {
      */
     @Override
     public void actualizar(String estado) {
-        semaforo.notificar(estado);
-        semaforo.iniciarCiclo();
+        semaforo.establecerEstado(estado);
     }
 }

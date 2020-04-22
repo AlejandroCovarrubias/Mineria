@@ -3,7 +3,7 @@
  * 
  * Creada el 20/04/2020 a las 09:28PM
  */
-package interfaz;
+package vehiculoiot;
 
 /**
  * Interfaz que establece lo necesario para un vehículo y su transporte.

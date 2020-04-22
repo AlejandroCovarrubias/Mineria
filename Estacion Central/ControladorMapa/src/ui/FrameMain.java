@@ -30,7 +30,7 @@ public class FrameMain extends javax.swing.JFrame {
     // GPS
     private ClienteGPS gps;
     private Session sesionGPS = null;
-    String rutaGPS = "ws://localhost:8080/GPS/gps";
+    private String rutaGPS = "ws://localhost:8080/GPS/gps";
     
 
 
