@@ -7,7 +7,8 @@ package websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import congestiones.ManejadorCongestiones;
+import interfaz.INotificaciones;
+import notificacion.Notificaciones;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +42,7 @@ public class ServerSocket {
     private static List<Session> clients
             = Collections.synchronizedList(new ArrayList<Session>());
 
-    private ManejadorCongestiones congestiones = new ManejadorCongestiones();
+    private INotificaciones congestiones = new Notificaciones();
     
     @OnOpen
     public void onOpen(Session sesion) {
@@ -97,7 +98,7 @@ public class ServerSocket {
                 // Convierte el semaforo IoT a uno de mina
                 Semaforo sem = Transformador.transformarSemaforo(msg.getContenido());
                 // Agrega al manejador de congestiones
-                congestiones.agregaSemaforo(sem);
+                congestiones.agregarSemaforo(sem);
                 // Enpaqueta
                 mina = new MensajeMina(sem);
                 // Se lo envia a la central
@@ -121,7 +122,7 @@ public class ServerSocket {
                 // Convierte el vehiculo IoT a uno de mina
                 Vehiculo veh = Transformador.transformarVehiculo(msg.getContenido());
                 // Agrega al manejador de congestiones
-                congestiones.agregaVehiculo(veh);
+                congestiones.agregarVehiculo(veh);
                 // Enpaqueta
                 mina = new MensajeMina(veh);
                 // Se lo envia a la central
@@ -168,24 +169,10 @@ public class ServerSocket {
     }
     
     private void tratarCongestiones(Gson gson){
-        Congestion cong = congestiones.revisaCongestiones();
-        if(cong!=null){
-            // Enpaqueta
-                MensajeMina mina = new MensajeMina(cong);
-                // Se lo envia a la central
-                if(central!=null){
-                    // Convierte a json
-                    String msgFinal = gson.toJson(mina);
-                    // Manda
-                    try {
-                        central.getBasicRemote().sendText(msgFinal);
-                        System.out.println("GPS: mandado congestion");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } 
-                }else{
-                    System.out.println("GPS: No se econtro la central para mandar congestion");
-                }
+        List<Congestion> cong = congestiones.obtenerCongestiones();
+        if(!cong.isEmpty()){
+            // Manda correo
+            System.out.println("NOTIFICACIONES: Mandado correo.");
         }
     }
 }

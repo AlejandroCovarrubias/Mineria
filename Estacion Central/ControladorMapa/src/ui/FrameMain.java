@@ -10,7 +10,6 @@ import java.net.URI;
 import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 import interfaz.INotificaciones;
-import notificacion.Notificaciones;
 
 /**
  * Frame principal donde se despliega el mapa, se puede cambiar el estado 
@@ -48,8 +47,6 @@ public class FrameMain extends javax.swing.JFrame {
         this.pnlMapa.add(pnl);
         pnl.revalidate();
         
-        // Inicializa interfaces
-        notificaciones = new Notificaciones();
         // interfaz mapa
         conectar();
         
@@ -89,11 +86,6 @@ public class FrameMain extends javax.swing.JFrame {
     public void procesarUbicaciones(){
         // Actualiza el mapa
         
-        // Revisa congestiones
-        if(gps.getCongestion()!=null){
-            notificaciones.registrarCongestion(gps.getCongestion());
-            gps.setCongestion(null);
-        }
     }
 
     /**

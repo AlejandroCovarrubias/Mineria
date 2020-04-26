@@ -34,7 +34,6 @@ public class ClienteGPS {
     private FrameMain actualizable;
     private List<Vehiculo> vehiculos;
     private List<Semaforo> semaforos;
-    private Congestion congestion;
 
     /**
      * Constructor para inicializar variables.
@@ -109,10 +108,6 @@ public class ClienteGPS {
                     semaforos.add(msg.getSemaforo());
                 }
                 break;
-            case CONGESTION:
-                // Guarda la congestion
-                congestion = msg.getCongestion();
-                break;
                 
         }
 
@@ -182,14 +177,6 @@ public class ClienteGPS {
 
     public void setActualizable(FrameMain actualizable) {
         this.actualizable = actualizable;
-    }
-
-    public Congestion getCongestion() {
-        return congestion;
-    }
-
-    public void setCongestion(Congestion congestion) {
-        this.congestion = congestion;
     }
     
     

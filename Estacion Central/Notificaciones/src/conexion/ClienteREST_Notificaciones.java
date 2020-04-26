@@ -29,7 +29,7 @@ public class ClienteREST_Notificaciones {
     
     public void registrarCongestion(Congestion congestion){
         client.postTransporte(congestion);
-        System.out.println("Registrada la congestion en REST!");
+        System.out.println("NOTIFICACIONES: Registrada la congestion en REST!");
     }
     
     // Metodos default

@@ -5,7 +5,10 @@
  */
 package interfaz;
 
+import java.util.List;
 import objetos.Congestion;
+import objetos.Semaforo;
+import objetos.Vehiculo;
 
 
 /**
@@ -15,6 +18,9 @@ import objetos.Congestion;
  */
 public interface INotificaciones {
     
+    public List<Congestion> obtenerCongestiones();
+    public void agregarVehiculo(Vehiculo v);
+    public void agregarSemaforo(Semaforo s);
     public void registrarCongestion(Congestion g);
     
 }
