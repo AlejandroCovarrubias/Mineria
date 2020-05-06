@@ -7,7 +7,6 @@ package ControladorSemaforos;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import interfaces.ISemaforo;
 import java.io.IOException;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
@@ -91,8 +90,5 @@ public class ClienteGPSWebSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    
-    
-    
+    }   
 }
