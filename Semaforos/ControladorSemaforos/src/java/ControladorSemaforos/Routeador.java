@@ -97,7 +97,7 @@ public class Routeador {
         int intentos = 0;
         int intentosMax = 5;
         
-        gps = new ClienteGPSWebSocket(producer);
+        gps = new ClienteGPSWebSocket();
         sesionGPS = null;
         
         while(intentos<intentosMax){

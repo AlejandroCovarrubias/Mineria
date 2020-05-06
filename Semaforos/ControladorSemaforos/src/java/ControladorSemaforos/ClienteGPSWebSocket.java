@@ -23,21 +23,12 @@ import mensajeIoT.TipoIoT;
 @ClientEndpoint
 public class ClienteGPSWebSocket {
     
-    private ProducerControl producer;
     private String rutaGPS = "ws://localhost:8080/GPS/gps";
 
     /**
      * Constructor.
      */
     public ClienteGPSWebSocket() {
-    }
-
-    /**
-     * Constructor con parametro.
-     * @param producer 
-     */
-    public ClienteGPSWebSocket(ProducerControl producer) {
-        this.producer = producer;
     }
     
     
@@ -66,16 +57,6 @@ public class ClienteGPSWebSocket {
         }
     }
     
-    /**
-     * Trata el mensaje.
-     * @param message Mensaje.
-     */
-    @OnMessage
-    public void onMessage(String message) {
-        String[] datos = message.split(",");
-        // ID, Estado
-        producer.encolarOrden(datos[0], datos[1]);
-    }
     
     public void mandarSemaforo(MensajeIoT msgIoT, Session p){
         // Convierte a JSON

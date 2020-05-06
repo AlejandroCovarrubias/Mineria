@@ -120,25 +120,6 @@ public class ClienteGPS {
         actualizable.procesarUbicaciones();
     }
     
-    public void cambiarEstado(String semaforo, Session p){
-        // Crea un mensaje IoT para mandar
-        MensajeIoT msg = new MensajeIoT(TipoIoT.ACTUALIZAR_SEMAFORO_CENTRAL);
-        msg.setContenido(semaforo);
-        
-        // Convierte a JSon
-        GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();
-        Gson gson = builder.create();
-
-        String send = gson.toJson(msg);
-        try{
-            p.getBasicRemote().sendText(send);
-            System.out.println("Mandado cambio de semaforos a GPS.");
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        
-    }
     
     /**
      * Regresa el contador.

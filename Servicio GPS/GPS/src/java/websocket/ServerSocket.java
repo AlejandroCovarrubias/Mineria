@@ -46,13 +46,13 @@ public class ServerSocket {
     
     @OnOpen
     public void onOpen(Session sesion) {
-        System.out.println("Open Connection ...");
+        System.out.println("GPS: Open Connection ...");
         clients.add(sesion);
     }
 
     @OnClose
     public void onClose(Session sesion) {
-        System.out.println("Close Connection ...");
+        System.out.println("GPS: Close Connection ...");
         if(sesion.equals(central))
             central = null;
         else if(sesion.equals(controladorSemaforos))

@@ -6,10 +6,10 @@
 package ui;
 
 import conexion.ClienteGPS;
+import conexion.ClienteSemaforos;
 import java.net.URI;
 import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
-import interfaz.INotificaciones;
 
 /**
  * Frame principal donde se despliega el mapa, se puede cambiar el estado 
@@ -20,9 +20,6 @@ import interfaz.INotificaciones;
  */
 public class FrameMain extends javax.swing.JFrame {
     
-    // Interfaces
-    private INotificaciones notificaciones;
-    
     // interfaz mapa
     private PanelMapa pnl;
     
@@ -30,6 +27,11 @@ public class FrameMain extends javax.swing.JFrame {
     private ClienteGPS gps;
     private Session sesionGPS = null;
     private String rutaGPS = "ws://localhost:8080/GPS/gps";
+    
+    // Semaforos
+    private ClienteSemaforos semaforos;
+    private Session sesionSemaforos = null;
+    private String rutaSemaforos = "ws://localhost:8080/ControladorSemaforos/controladorSemaforos";
     
 
 
@@ -60,6 +62,8 @@ public class FrameMain extends javax.swing.JFrame {
         int intentos = 0;
         int intentosMax = 5;
         
+        // GPS
+        
         gps = new ClienteGPS(this);
         sesionGPS = null;
         
@@ -78,6 +82,29 @@ public class FrameMain extends javax.swing.JFrame {
             System.exit(1);
         }
         System.out.println("conectado a gps!");
+        
+        // Semaforos
+        
+        intentos = 0;
+        semaforos = new ClienteSemaforos();
+        sesionSemaforos = null;
+        
+        while(intentos<intentosMax){
+            try{
+                ClientManager cm = ClientManager.createClient();
+                sesionSemaforos = cm.connectToServer(semaforos, new URI(rutaSemaforos));
+                break;
+            }catch(Exception e){
+                intentos++;
+                System.out.println("Error conectando al controlador semaforos, intentando "+(intentosMax-intentos)+" veces mas");
+            }
+        }
+        if(intentos==intentosMax || sesionGPS == null){
+            System.out.println("No se pudo conectar...");
+            System.exit(1);
+        }
+        System.out.println("conectado a semaforos!");
+        
     }
     
     /**
@@ -179,9 +206,9 @@ public class FrameMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        gps.cambiarEstado("S1,ROJO", sesionGPS);
-        gps.cambiarEstado("S2,ROJO", sesionGPS);
-        gps.cambiarEstado("S3,ROJO", sesionGPS);
+        semaforos.cambiarEstado("S1,ROJO", sesionSemaforos);
+        semaforos.cambiarEstado("S2,ROJO", sesionSemaforos);
+        semaforos.cambiarEstado("S3,ROJO", sesionSemaforos);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
