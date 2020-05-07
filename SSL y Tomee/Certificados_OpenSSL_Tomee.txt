@@ -1,0 +1,95 @@
+// Paso 1 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Instalar OpenSSL desde: https://slproweb.com/products/Win32OpenSSL.html Primera opcion
+El link presentado por el profesor lleva al a versión 0.98.0, que a mi me daba error y no me dejaba
+pasar al paso 4.
+ 
+Seguir el wizard y seleccionar una ruta de instalación. Lo mejor sería dejar la ruta por default 
+A PARTIR DE ESTE PUNTO SE TOMARÁ POR HECHO QUE LA RUTA DE INSTALACIÓN DE OPENSSL ES LA SIGUIENTE 
+C:\Program Files\OpenSSL-Win64
+
+// Paso 2 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
+Ir a consola de comandos y acceder a -> cd C:\Program Files\OpenSSL-Win64\bin\ 
+-> openssl genrsa -des3 -out server.key 1024 
+Colocar una contraseña y confirmar. "mineria" fue la contraseña elegida 
+Hemos generado una llave privada utilizando el openssl.exe en formato des3 de 1024
+
+// Paso 3 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
+Utilizar la llave anterior y generar el certificado csr
+-> openssl req -new -key server.key -out server.csr 
+El comando indica de utilizar la llave generada en el primer paso y generar como salida un .csr firmado por la llave. 
+Por alguna razon con esta version no hay necesidad de indicarle el archivo de configuracion. 
+
+// Paso 4 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Generar el certificado auto-firmado crt 
+-> openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt 
+En la versión 1.1.1 Light de OpenSSL bajada desde ese sitio que encontré en la wiki de OpenSSL los archivos generados, 
+como la llave, el .csr y el .crt auto-firmado se quedan en la carpeta bin del directorio de instalación y no hay que exportarlos
+
+// Paso 5 ´'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+PREPARANDO APACHE TOMEE 
+Generamos un keystore en formato pkcs12 utilizando el certificado y la llave privada con el siguiente comando 
+-> openssl pkcs12 -export -in server.crt -inkey server.key -out server.p12 -name tomcat -caname root_ca
+
+Esto nos dejaría un formato pkcs12 no propietario, necesitamos pasarlo a jks utilizando keytool de Java
+->"%JAVA_HOME%\bin\keytool" -importkeystore -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcalias tomcat -destalias tomcat
+Asegurate que los alias sean los mismos que en el paso anterior
+Se pedirán dos contraseñas, la primera fue mineria, igual que la llave, la segunda mineria1, tiene que ser diferente
+
+// Paso 6 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Dirigirse a ${CATALINA_HOME}/conf/server.xml
+Se puede acceder a este archivo desde Netbeans, dirigiendose al tab de Services > Server > Apache Tomee > Edit server.xml
+Alli tendremos que editar la tag <Connector /> dentro de <Service />
+Por defecto vienen dos tags <Connector />, una por defecto para el puerto 8080 (HTTP) y otra para el plugin AJB en el puerto (Designado el 8009)
+Ambas tag redirigen al puerto 8443 si este esta activo
+Tambien hay bastante codigo comentado, si se lee detenidamente se podran encontrar varias implementaciones distintas de Connector
+la que usaremos dependera de la instalacion que necesitemos (Se explica en la documentación que pasó el profe)
+
+En este caso la segunda opción es la indicada, descomentala. Quedaría asi (NO QUITES LOS OTROS CONNECTOR, AL FINAL QUEDARÁN 3)
+
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               maxThreads="150" SSLEnabled="true">
+        <SSLHostConfig>
+            <Certificate certificateKeystoreFile="C:\certs\mineria\keystore.jks"
+            certificateKeystorePassword="mineria"
+                         type="RSA" xpoweredBy="false" server="Apache TomEE" />
+        </SSLHostConfig>
+</Connector>
+
+//He subido el archivo de configuración server.xml a una carpeta ${CATALINA_HOME}/conf
+
+en certificateKeystoreFile le estoy designando la ruta donde yo, después del proceso guardé mi archivo jks
+en certificateKeystorePassword asigno la que utilicé al usar keytool para mi jks
+
+Reinicia tu Apache Tomee y espera. Si no aparece ningún error referente, estamos bien.
+
+// Paso 7 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Recuerda pasar el certificado .crt a tu navegador
+EDGE CHROMIUM: Configuracion => Privacidad y Servicios => Privacidad => Administrar Certificados => Importar archivo .crt auto-firmado
+Firefox: Preferencias => Avanzada => Ver certificados => Autoridades => Importar archivo .crt auto-firmado
+Chrome: Configuración => HTTPS/SSL => Manejar certificados => Autoridades => Importar archivo .crt auto-firmado
+
+Comprueba que tu servidor esté trabajando bajo el protocolo 8443 designado para https
+Asi como funciona localhost:8080 prueba con https://localhost:8443
+
+// POSIBLES ERRORES
+En el log de tomcat pueden aparecer los siguientes errores
+
+java.io.IOException: Keystore was tampered with, or password was incorrect
+Es literalmente que escribiste mal la contraseña o que tu keystore no es la correcta, pudo haber algo mal en el proceso de creación
+o en la configuración en el archivo server.xml
+
+java.security.UnrecoverableKeyException: Cannot recover key
+Para tomcat 6 o inferior, asegurate que tanto la contraseña para la keystore como la de la key son iguales
+Para tomcat 7, asegurate de lo mismo y de que lo estás indicando en el archivo server.xml
+Lo cual es un poco chocante porque tienen que ser distintas para que keytool funcione...
+
+La solución sería
+
+Cambiar primero la contraseña del keystore
+"%JAVA_HOME%\bin\keytool" -storepasswd -new mineria -keystore keystore.jks
+
+Después la del alias
+"%JAVA_HOME%\bin\keytool" -keypasswd -alias tomcat -new mineria -keystore keystore.jks
+
+#EraMasFacilEnLinux
+ 
