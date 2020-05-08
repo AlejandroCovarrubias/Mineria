@@ -1,0 +1,5 @@
+com.auth0.jwt
+com.auth0.jwt.algorithms
+com.auth0.jwt.exceptions
+com.auth0.jwt.impl
+com.auth0.jwt.interfaces
