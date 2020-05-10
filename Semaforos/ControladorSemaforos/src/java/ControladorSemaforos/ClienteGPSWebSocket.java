@@ -23,7 +23,7 @@ import mensajeIoT.TipoIoT;
 @ClientEndpoint
 public class ClienteGPSWebSocket {
     
-    private String rutaGPS = "ws://localhost:8080/GPS/gps";
+    private String rutaGPS = "wss://localhost:8443/GPS/gps";
 
     /**
      * Constructor.

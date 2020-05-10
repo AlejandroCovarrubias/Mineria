@@ -6,13 +6,17 @@
 package ControladorSemaforos;
 
 import Prueba.Visual;
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.websocket.Session;
 import mensajeIoT.MensajeIoT;
+import org.glassfish.grizzly.ssl.SSLContextConfigurator;
+import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.tyrus.client.ClientManager;
+import org.glassfish.tyrus.client.ClientProperties;
 
 /**
  *
@@ -28,7 +32,7 @@ public class Routeador {
     
     private ClienteGPSWebSocket gps;
     private Session sesionGPS = null;
-    private String rutaGPS = "ws://localhost:8080/GPS/gps";
+    String rutaGPS = "wss://localhost:8443/GPS/gps";
     private boolean conectado = false;
     
     //Visual temporal
@@ -95,7 +99,7 @@ public class Routeador {
         
         System.out.println("[R] Conectando al Servicio GPS...");
         int intentos = 0;
-        int intentosMax = 5;
+        int intentosMax = 1;
         
         gps = new ClienteGPSWebSocket();
         sesionGPS = null;
@@ -103,9 +107,25 @@ public class Routeador {
         while(intentos<intentosMax){
             try{
                 ClientManager cm = ClientManager.createClient();
+                
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_FILE, "src/java/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_FILE, "src/java/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_PASSWORD, "mineria");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_PASSWORD, "mineria");
+                final SSLContextConfigurator defaultConfig = new SSLContextConfigurator();
+
+                defaultConfig.retrieve(System.getProperties());
+                    // or setup SSLContextConfigurator using its API.
+
+                SSLEngineConfigurator sslEngineConfigurator =
+                    new SSLEngineConfigurator(defaultConfig, true, false, false);
+                cm.getProperties().put(ClientProperties.SSL_ENGINE_CONFIGURATOR,
+                    sslEngineConfigurator);
+                
                 sesionGPS = cm.connectToServer(gps, new URI(rutaGPS));
                 break;
             }catch(Exception e){
+                e.printStackTrace();
                 intentos++;
                 System.out.println("[R] Error conectando al GPS, intentando "+(intentosMax-intentos)+" veces mas");
             }

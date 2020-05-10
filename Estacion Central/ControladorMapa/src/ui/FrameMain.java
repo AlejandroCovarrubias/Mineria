@@ -9,7 +9,10 @@ import conexion.ClienteGPS;
 import conexion.ClienteSemaforos;
 import java.net.URI;
 import javax.websocket.Session;
+import org.glassfish.grizzly.ssl.SSLContextConfigurator;
+import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.tyrus.client.ClientManager;
+import org.glassfish.tyrus.client.ClientProperties;
 
 /**
  * Frame principal donde se despliega el mapa, se puede cambiar el estado 
@@ -26,12 +29,12 @@ public class FrameMain extends javax.swing.JFrame {
     // GPS
     private ClienteGPS gps;
     private Session sesionGPS = null;
-    private String rutaGPS = "ws://localhost:8080/GPS/gps";
+    private String rutaGPS = "wss://localhost:8443/GPS/gps";
     
     // Semaforos
     private ClienteSemaforos semaforos;
     private Session sesionSemaforos = null;
-    private String rutaSemaforos = "ws://localhost:8080/ControladorSemaforos/controladorSemaforos";
+    private String rutaSemaforos = "wss://localhost:8443/ControladorSemaforos/controladorSemaforos";
     
 
 
@@ -70,6 +73,22 @@ public class FrameMain extends javax.swing.JFrame {
         while(intentos<intentosMax){
             try{
                 ClientManager cm = ClientManager.createClient();
+                
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_FILE, "src/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_FILE, "src/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_PASSWORD, "mineria");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_PASSWORD, "mineria");
+                final SSLContextConfigurator defaultConfig = new SSLContextConfigurator();
+
+                defaultConfig.retrieve(System.getProperties());
+                    // or setup SSLContextConfigurator using its API.
+
+                SSLEngineConfigurator sslEngineConfigurator =
+                    new SSLEngineConfigurator(defaultConfig, true, false, false);
+                cm.getProperties().put(ClientProperties.SSL_ENGINE_CONFIGURATOR,
+                    sslEngineConfigurator);
+                
+                
                 sesionGPS = cm.connectToServer(gps, new URI(rutaGPS));
                 break;
             }catch(Exception e){
@@ -92,6 +111,21 @@ public class FrameMain extends javax.swing.JFrame {
         while(intentos<intentosMax){
             try{
                 ClientManager cm = ClientManager.createClient();
+                
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_FILE, "src/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_FILE, "src/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_PASSWORD, "mineria");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_PASSWORD, "mineria");
+                final SSLContextConfigurator defaultConfig = new SSLContextConfigurator();
+
+                defaultConfig.retrieve(System.getProperties());
+                    // or setup SSLContextConfigurator using its API.
+
+                SSLEngineConfigurator sslEngineConfigurator =
+                    new SSLEngineConfigurator(defaultConfig, true, false, false);
+                cm.getProperties().put(ClientProperties.SSL_ENGINE_CONFIGURATOR,
+                    sslEngineConfigurator);
+                
                 sesionSemaforos = cm.connectToServer(semaforos, new URI(rutaSemaforos));
                 break;
             }catch(Exception e){

@@ -16,7 +16,11 @@ import javax.websocket.Session;
 import mensajeIoT.MensajeIoT;
 import objetos.Material;
 import objetos.Transporte;
+import static org.glassfish.grizzly.http.CookiesBuilder.client;
+import org.glassfish.grizzly.ssl.SSLContextConfigurator;
+import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.tyrus.client.ClientManager;
+import org.glassfish.tyrus.client.ClientProperties;
 
 /**
  * Clase para probar el programa.
@@ -25,6 +29,7 @@ import org.glassfish.tyrus.client.ClientManager;
  */
 public class start {
 
+    
     /**
      * @param args the command line arguments
      */
@@ -34,18 +39,36 @@ public class start {
         int intentosMax = 5;
 
         //RUTA
-        String ruta = "ws://localhost:8080/GPS/gps";
+        String ruta = "wss://localhost:8443/GPS/gps";
 
         ClientGPSVehiculo gps = new ClientGPSVehiculo();
         REST_Transporte rest = new REST_Transporte();
         Session s = null;
+        
+        
 
         while (intentos < intentosMax) {
             try {
                 ClientManager cm = ClientManager.createClient();
+                
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_FILE, "src/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_FILE, "src/conexion/keystore.jks");
+                System.getProperties().put(SSLContextConfigurator.KEY_STORE_PASSWORD, "mineria");
+                System.getProperties().put(SSLContextConfigurator.TRUST_STORE_PASSWORD, "mineria");
+                final SSLContextConfigurator defaultConfig = new SSLContextConfigurator();
+
+                defaultConfig.retrieve(System.getProperties());
+                    // or setup SSLContextConfigurator using its API.
+
+                SSLEngineConfigurator sslEngineConfigurator =
+                    new SSLEngineConfigurator(defaultConfig, true, false, false);
+                cm.getProperties().put(ClientProperties.SSL_ENGINE_CONFIGURATOR,
+                    sslEngineConfigurator);
+                
                 s = cm.connectToServer(gps, new URI(ruta));
                 break;
             } catch (Exception e) {
+                e.printStackTrace();
                 intentos++;
                 System.out.println("Error conectando al gps, intentando " + (intentosMax - intentos) + " veces mas");
             }

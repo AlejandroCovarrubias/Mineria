@@ -28,10 +28,10 @@ como la llave, el .csr y el .crt auto-firmado se quedan en la carpeta bin del di
 // Paso 5 ´'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 PREPARANDO APACHE TOMEE 
 Generamos un keystore en formato pkcs12 utilizando el certificado y la llave privada con el siguiente comando 
--> openssl pkcs12 -export -in server.crt -inkey server.key -out server.p12 -name tomcat -caname root_ca
+-> openssl pkcs12 -export -in server.crt -inkey server.key -out server.p12 -name localhost -caname root_ca
 
 Esto nos dejaría un formato pkcs12 no propietario, necesitamos pasarlo a jks utilizando keytool de Java
-->"%JAVA_HOME%\bin\keytool" -importkeystore -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcalias tomcat -destalias tomcat
+->"%JAVA_HOME%\bin\keytool" -importkeystore -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcalias localhost -destalias localhost
 Asegurate que los alias sean los mismos que en el paso anterior
 Se pedirán dos contraseñas, la primera fue mineria, igual que la llave, la segunda mineria1, tiene que ser diferente
 

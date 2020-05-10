@@ -17,7 +17,6 @@ import javax.websocket.Session;
 import mensajeIoT.MensajeIoT;
 import mensajeIoT.TipoIoT;
 import mensajemina.MensajeMina;
-import objetos.Congestion;
 import objetos.Semaforo;
 import objetos.Vehiculo;
 import ui.FrameMain;
