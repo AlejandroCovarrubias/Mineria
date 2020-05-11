@@ -5,8 +5,8 @@
  */
 package interfazMapa;
 
+import java.awt.Graphics;
 import java.util.List;
-import objetos.ComponenteMapa;
 import objetos.Semaforo;
 import objetos.Vehiculo;
 
@@ -16,9 +16,9 @@ import objetos.Vehiculo;
  */
 public interface IMapa {
     
-    public List<ComponenteMapa> obtenerComponente();
+    public void actualizarComponentes();
     public void actualizarSemaforos(List<Semaforo> semaforos);
     public void actualziarVehiculos(List<Vehiculo> vehiculos);
-            
+    public void dibujarMapa(Graphics g);
     
 }

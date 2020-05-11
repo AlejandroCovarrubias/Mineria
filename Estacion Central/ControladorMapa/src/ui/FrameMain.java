@@ -156,7 +156,8 @@ public class FrameMain extends javax.swing.JFrame {
         // Actualiza el mapa
         mapa.actualizarSemaforos(gps.getSemaforos());
         mapa.actualziarVehiculos(gps.getVehiculos());
-        pnl.setComponentes(mapa.obtenerComponente());
+        mapa.actualizarComponentes();
+        pnl.setMapa(mapa);
         pnl.repaint();
     }
 
