@@ -17,7 +17,15 @@ Hemos generado una llave privada utilizando el openssl.exe en formato des3 de 10
 Utilizar la llave anterior y generar el certificado csr
 -> openssl req -new -key server.key -out server.csr 
 El comando indica de utilizar la llave generada en el primer paso y generar como salida un .csr firmado por la llave. 
-Por alguna razon con esta version no hay necesidad de indicarle el archivo de configuracion. 
+Por alguna razon con esta version no hay necesidad de indicarle el archivo de configuracion.
+Te pedirá datos para conformar el certificado
+
+#Para futuros problemas
+En el apartado que solicita tu FQDN o YOUR name, coloca el nombre DNS "ejemplo.com"
+En este caso será "localhost", suponiendo que asi accedes al servidor
+Recuerda que el certificado es sensible, no es lo mismo colocar 127.0.0.1 a localhost en este caso
+En casos futuros es posible que el certificado te sea otorgado y no lo generes tu, o incluso que utilices
+un dominio sobre el que no tengas control.
 
 // Paso 4 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Generar el certificado auto-firmado crt 
@@ -33,7 +41,6 @@ Generamos un keystore en formato pkcs12 utilizando el certificado y la llave pri
 Esto nos dejaría un formato pkcs12 no propietario, necesitamos pasarlo a jks utilizando keytool de Java
 ->"%JAVA_HOME%\bin\keytool" -importkeystore -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcalias localhost -destalias localhost
 Asegurate que los alias sean los mismos que en el paso anterior
-Se pedirán dos contraseñas, la primera fue mineria, igual que la llave, la segunda mineria1, tiene que ser diferente
 
 // Paso 6 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Dirigirse a ${CATALINA_HOME}/conf/server.xml

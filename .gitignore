@@ -63,6 +63,11 @@
 /Objetos/ObjetosUsuarios/dist/
 /Repositorios/Usuarios/AccesoUsuarios/build/
 /Repositorios/Usuarios/AccesoUsuarios/dist/
+<<<<<<< Updated upstream
 /Estacion Central/MapaGrafico/nbproject/private/
 /Estacion Central/MapaGrafico/build/
 /Estacion Central/MapaGrafico/dist/
+=======
+/Repositorios/UsuariosClient/nbproject/private/
+/Repositorios/UsuariosClient/build/
+>>>>>>> Stashed changes
