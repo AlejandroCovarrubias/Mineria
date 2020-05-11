@@ -21,8 +21,12 @@ public class Transformador {
     private static int minViejo = 0;
     private static int maxViejo = 18500;
 
-    private static int minNuevo = 0;
-    private static int maxNuevo = 100;
+    private static int minNuevoX = 0;
+    private static int maxNuevoX = 900;
+    
+    private static int minNuevoY = 0;
+    private static int maxNuevoY = 550;
+    
 
     public static Semaforo transformarSemaforo(String semaforo) {
         Semaforo nuevo = new Semaforo();
@@ -36,10 +40,11 @@ public class Transformador {
         nuevo.setEstado(datos[1]);
         
         int rangoViejo = (maxViejo - minViejo);
-        int rangoNuevo = (maxNuevo - minNuevo);
-
-        int x = (((Integer.parseInt(datos[2]) - minViejo) * rangoNuevo) / rangoViejo) + minNuevo;
-        int y = (((Integer.parseInt(datos[3]) - minViejo) * rangoNuevo) / rangoViejo) + minNuevo;
+        int rangoNuevoX = (maxNuevoX - minNuevoX);
+        int rangoNuevoY = (maxNuevoY - minNuevoY);
+        
+        int x = (((Integer.parseInt(datos[2]) - minViejo) * rangoNuevoX) / rangoViejo) + minNuevoX;
+        int y = (((Integer.parseInt(datos[3]) - minViejo) * rangoNuevoY) / rangoViejo) + minNuevoY;
         
         nuevo.setX(x);
         nuevo.setY(y);
@@ -62,10 +67,11 @@ public class Transformador {
         nuevo.setTipo("Regular");
 
         int rangoViejo = (maxViejo - minViejo);
-        int rangoNuevo = (maxNuevo - minNuevo);
-
-        int x = (((Integer.parseInt(datos[2]) - minViejo) * rangoNuevo) / rangoViejo) + minNuevo;
-        int y = (((Integer.parseInt(datos[3]) - minViejo) * rangoNuevo) / rangoViejo) + minNuevo;
+        int rangoNuevoX = (maxNuevoX - minNuevoX);
+        int rangoNuevoY = (maxNuevoY - minNuevoY);
+        
+        int x = (((Integer.parseInt(datos[2]) - minViejo) * rangoNuevoX) / rangoViejo) + minNuevoX;
+        int y = (((Integer.parseInt(datos[3]) - minViejo) * rangoNuevoY) / rangoViejo) + minNuevoY;
 
         nuevo.setX(x);
         nuevo.setY(y);

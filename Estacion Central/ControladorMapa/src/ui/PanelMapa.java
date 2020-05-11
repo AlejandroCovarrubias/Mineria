@@ -5,6 +5,13 @@
  */
 package ui;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.List;
+import objetos.ComponenteMapa;
+import java.awt.geom.Rectangle2D;
+
 /**
  * Panel en la interfaz gráfica que muestra de manera gráfica el mapa de la 
  * mina con los vehículos y semáforos.
@@ -13,6 +20,8 @@ package ui;
  */
 public class PanelMapa extends javax.swing.JPanel {
 
+    private List<ComponenteMapa> componentes;
+    
     /**
      * Constructor que inicializa el panel
      */
@@ -20,6 +29,32 @@ public class PanelMapa extends javax.swing.JPanel {
         initComponents();
         this.setSize(900, 550);
     }
+
+    public void setComponentes(List<ComponenteMapa> componentes) {
+        this.componentes = componentes;
+    }
+    
+    
+    @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponents(g);
+                Graphics2D g2 = (Graphics2D)g;
+                
+                // Imagen fondo
+                
+                // Itera sobre componentes
+                if(componentes !=null){
+                    for(ComponenteMapa com : componentes){
+                        g2.setColor(com.getColor());
+                        g2.draw(com.getDibujo());
+                        g2.fill(com.getDibujo());
+                        g2.setColor(Color.WHITE);
+                        g2.drawString(com.getId(), (float)com.getDibujo().getCenterX(), (float)com.getDibujo().getCenterY());
+                    }
+                }
+                
+            }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

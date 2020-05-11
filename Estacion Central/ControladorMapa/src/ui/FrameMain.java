@@ -7,6 +7,8 @@ package ui;
 
 import conexion.ClienteGPS;
 import conexion.ClienteSemaforos;
+import interfazMapa.IMapa;
+import interfazMapa.Mapa;
 import java.net.URI;
 import javax.websocket.Session;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
@@ -24,6 +26,7 @@ import org.glassfish.tyrus.client.ClientProperties;
 public class FrameMain extends javax.swing.JFrame {
     
     // interfaz mapa
+    private IMapa mapa;
     private PanelMapa pnl;
     
     // GPS
@@ -50,9 +53,14 @@ public class FrameMain extends javax.swing.JFrame {
         pnl.setSize(this.pnlMapa.getSize());
         pnl.setBorder(this.pnlMapa.getBorder());
         this.pnlMapa.add(pnl);
+        this.pnlMapa.setOpaque(false);
+        pnl.setOpaque(false);
         pnl.revalidate();
+        this.pnlMapa.revalidate();
         
         // interfaz mapa
+        mapa = new Mapa();
+        
         conectar();
         
     }
@@ -146,7 +154,10 @@ public class FrameMain extends javax.swing.JFrame {
      */
     public void procesarUbicaciones(){
         // Actualiza el mapa
-        
+        mapa.actualizarSemaforos(gps.getSemaforos());
+        mapa.actualziarVehiculos(gps.getVehiculos());
+        pnl.setComponentes(mapa.obtenerComponente());
+        pnl.repaint();
     }
 
     /**
