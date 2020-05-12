@@ -1,17 +1,22 @@
+package ui;
+
+import conexion.REST_UsuariosClient;
+import javax.swing.JPanel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Alejandro Galindo
  */
 public class Main extends javax.swing.JFrame {
-    
+
     private PnlLogIn pnlLog;
     private PnlUsuario pnlUser;
+    private REST_UsuariosClient cliente;
 
     /**
      * Creates new form Main
@@ -21,10 +26,34 @@ public class Main extends javax.swing.JFrame {
         this.setTitle("Cliente Usuarios");
         this.setLocationRelativeTo(null);
         this.setSize(349, 526);
+        this.setResizable(false);
+
+        cliente = new REST_UsuariosClient();
         
-        pnlLog = new PnlLogIn(this);
-        pnlUser = new PnlUsuario(this);
-        
+        pnlLog = new PnlLogIn(this, cliente);
+        pnlUser = new PnlUsuario(this, cliente);
+
+        pnlLog.setSize(pnlFondo.getSize());
+        pnlLog.setBorder(pnlFondo.getBorder());
+        pnlFondo.add(pnlLog);
+        pnlFondo.setVisible(true);
+        pnlFondo.revalidate();
+        pnlFondo.repaint();
+
+    }
+
+    public void actualizarVista(JPanel panel) {
+        if (panel instanceof PnlLogIn) {
+            pnlFondo.removeAll();
+            pnlUser.setSize(pnlFondo.getSize());
+            pnlUser.setBorder(pnlFondo.getBorder());
+            pnlFondo.add(pnlUser);
+            pnlFondo.setVisible(true);
+            pnlFondo.repaint();
+            pnlFondo.revalidate();
+        } else if (panel instanceof PnlUsuario) {
+            //Por si hacemos un logout?
+        }
     }
 
     /**
@@ -41,6 +70,7 @@ public class Main extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         pnlFondo.setBackground(new java.awt.Color(255, 255, 255));
+        pnlFondo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout pnlFondoLayout = new javax.swing.GroupLayout(pnlFondo);
         pnlFondo.setLayout(pnlFondoLayout);
@@ -77,7 +107,7 @@ public class Main extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            
+
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);

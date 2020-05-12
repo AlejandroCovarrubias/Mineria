@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
  * @author Home
  */
 public class ComponenteMapa {
+
     private Rectangle2D dibujo;
     private Color color;
     private String id;
@@ -49,7 +50,5 @@ public class ComponenteMapa {
     public void setId(String id) {
         this.id = id;
     }
-    
-    
-    
+
 }

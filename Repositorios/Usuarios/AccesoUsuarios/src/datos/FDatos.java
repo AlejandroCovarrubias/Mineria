@@ -60,4 +60,13 @@ class FDatos implements IDatos {
             throw new Exception(exception.getMessage());
         }
     }
+
+    @Override
+    public Usuario validar(String correo, String contrasenia) throws Exception {
+        try {
+            return usuarios.validar(correo, contrasenia);
+        } catch (Exception exception) {
+            throw new Exception(exception.getMessage());
+        }
+    }
 }

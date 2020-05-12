@@ -1,6 +1,6 @@
 /**
  * PanelMapa.java
- * 
+ *
  * Creado el 20/04/2020 a las 07:21PM
  */
 package ui;
@@ -11,15 +11,15 @@ import java.util.List;
 import objetos.ComponenteMapa;
 
 /**
- * Panel en la interfaz gráfica que muestra de manera gráfica el mapa de la 
- * mina con los vehículos y semáforos.
- * 
+ * Panel en la interfaz gráfica que muestra de manera gráfica el mapa de la mina
+ * con los vehículos y semáforos.
+ *
  * @author Equipo Mineria.
  */
 public class PanelMapa extends javax.swing.JPanel {
 
     private IMapa mapa;
-    
+
     /**
      * Constructor que inicializa el panel
      */
@@ -32,16 +32,13 @@ public class PanelMapa extends javax.swing.JPanel {
         this.mapa = mapa;
     }
 
-    
-    
-    
     @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponents(g);
-                if(mapa!=null)
-                    mapa.dibujarMapa(g);
-            }
-    
+    protected void paintComponent(Graphics g) {
+        super.paintComponents(g);
+        if (mapa != null) {
+            mapa.dibujarMapa(g);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

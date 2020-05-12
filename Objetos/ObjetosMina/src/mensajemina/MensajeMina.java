@@ -1,6 +1,6 @@
 /**
  * MensajeMina.java
- * 
+ *
  * Creado el 20/04/2020 a las 07:53PM
  */
 package mensajemina;
@@ -10,13 +10,13 @@ import objetos.Semaforo;
 import objetos.Vehiculo;
 
 /**
- * Mensaje que se manda a través de del websocket del GPS y contiene o un 
+ * Mensaje que se manda a través de del websocket del GPS y contiene o un
  * vehículo, semáforo o congestión para utilizar en la estación central.
- * 
+ *
  * @author Equipo Mineria.
  */
 public class MensajeMina {
-    
+
     private TipoMina tipo;
     private Vehiculo vehiculo;
     private Semaforo semaforo;
@@ -24,7 +24,7 @@ public class MensajeMina {
 
     /**
      * Constructor para inicializar con el tipo mina.
-     * 
+     *
      * @param tipo Tipo de la mina.
      */
     public MensajeMina(TipoMina tipo) {
@@ -33,7 +33,7 @@ public class MensajeMina {
 
     /**
      * Constructor para inicializar con el vehiculo.
-     * 
+     *
      * @param vehiculo Vehiculo.
      */
     public MensajeMina(Vehiculo vehiculo) {
@@ -45,7 +45,7 @@ public class MensajeMina {
 
     /**
      * Constructor para inicializar con el semaforo.
-     * 
+     *
      * @param semaforo Semaforo.
      */
     public MensajeMina(Semaforo semaforo) {
@@ -61,8 +61,6 @@ public class MensajeMina {
         vehiculo = null;
         tipo = TipoMina.CONGESTION;
     }
-    
-    
 
     /**
      * Constructor por omision.
@@ -72,7 +70,7 @@ public class MensajeMina {
 
     /**
      * Regresa el tipo de mina.
-     * 
+     *
      * @return Tipo de mina.
      */
     public TipoMina getTipo() {
@@ -81,7 +79,7 @@ public class MensajeMina {
 
     /**
      * Establece el tipo de mina.
-     * 
+     *
      * @param tipo Tipo mina.
      */
     public void setTipo(TipoMina tipo) {
@@ -90,7 +88,7 @@ public class MensajeMina {
 
     /**
      * Regresa el vehiculo.
-     * 
+     *
      * @return Vehiculo.
      */
     public Vehiculo getVehiculo() {
@@ -99,7 +97,7 @@ public class MensajeMina {
 
     /**
      * Establece el vehiculo.
-     * 
+     *
      * @param vehiculo Vehiculo.
      */
     public void setVehiculo(Vehiculo vehiculo) {
@@ -108,7 +106,7 @@ public class MensajeMina {
 
     /**
      * Regresa el semaforo.
-     * 
+     *
      * @return Semaforo.
      */
     public Semaforo getSemaforo() {
@@ -117,7 +115,7 @@ public class MensajeMina {
 
     /**
      * Establece el semaforo.
-     * 
+     *
      * @param semaforo Semaforo.
      */
     public void setSemaforo(Semaforo semaforo) {
@@ -131,6 +129,4 @@ public class MensajeMina {
     public void setCongestion(Congestion congestion) {
         this.congestion = congestion;
     }
-    
-    
 }

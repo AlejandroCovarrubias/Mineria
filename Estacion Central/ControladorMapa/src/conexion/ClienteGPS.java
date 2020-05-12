@@ -1,6 +1,6 @@
 /**
  * ClienteGPS.java
- * 
+ *
  * Creado el 20/04/2020 a las 7:10PM
  */
 package conexion;
@@ -23,12 +23,12 @@ import ui.FrameMain;
 
 /**
  * Clase para la conexión al WebSocket del servidor de GPS.
- * 
+ *
  * @author Equipo Mineria.
  */
 @ClientEndpoint
 public class ClienteGPS {
-    
+
     private int count;
     private FrameMain actualizable;
     private List<Vehiculo> vehiculos;
@@ -36,6 +36,7 @@ public class ClienteGPS {
 
     /**
      * Constructor para inicializar variables.
+     *
      * @param actualizable Frame principal.
      */
     public ClienteGPS(FrameMain actualizable) {
@@ -44,33 +45,35 @@ public class ClienteGPS {
         vehiculos = new ArrayList<>();
         semaforos = new ArrayList<>();
     }
-    
+
     /**
      * Registra en central.
+     *
      * @param p Sesion.
      */
     @OnOpen
     public void onOpen(Session p) {
         // Manda para registrarse
-        try{
+        try {
             MensajeIoT msg = new MensajeIoT(TipoIoT.REGISTRAR_CENTRAL);
-            
+
             GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
             Gson gson = builder.create();
-            
+
             String send = gson.toJson(msg);
-            
+
             p.getBasicRemote().sendText(send);
-            
+
             System.out.println("registrado central");
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Trata el mensaje.
+     *
      * @param message Mensaje.
      */
     @OnMessage
@@ -79,49 +82,46 @@ public class ClienteGPS {
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
         Gson gson = builder.create();
-        
+
         MensajeMina msg = gson.fromJson(message, MensajeMina.class);
-        
-        
+
         // Hace cosas con el (actualiza mapa)
-        
-        switch(msg.getTipo()){
+        switch (msg.getTipo()) {
             case VEHICULO:
                 // Revisa si ya existe
-                if(vehiculos.contains(msg.getVehiculo())){
+                if (vehiculos.contains(msg.getVehiculo())) {
                     // Reemplaza
                     vehiculos.set(vehiculos.indexOf(msg.getVehiculo()), msg.getVehiculo());
-                }else{
+                } else {
                     // Agrega nuevo
                     vehiculos.add(msg.getVehiculo());
                 }
                 break;
-                
+
             case SEMAFORO:
                 // Revisa si ya existe
-                if(semaforos.contains(msg.getSemaforo())){
+                if (semaforos.contains(msg.getSemaforo())) {
                     // Reemplaza
                     semaforos.set(semaforos.indexOf(msg.getSemaforo()), msg.getSemaforo());
-                }else{
+                } else {
                     // Agrega nuevo
                     semaforos.add(msg.getSemaforo());
+                    actualizable.actualizarComboSemaforos();
                 }
                 break;
-                
+
         }
 
         // Por ahora nada mas imprime para probar que sirve
-        
-        System.out.println("Me llego: "+message);
-        
-        
+        System.out.println("Me llego: " + message);
+
         // Checa si hay congestiones
         actualizable.procesarUbicaciones();
     }
-    
-    
+
     /**
      * Regresa el contador.
+     *
      * @return Contador.
      */
     public int getCount() {
@@ -130,23 +130,27 @@ public class ClienteGPS {
 
     /**
      * Establece el contador.
+     *
      * @param count Contador.
      */
     public void setCount(int count) {
         this.count = count;
     }
-    
+
     /**
      * Regresa el vehiculo.
+     *
      * @return Vehiculo.
      */
     public List<Vehiculo> getVehiculos() {
         return vehiculos;
     }
-     /**
-      * Regresa la lista de semaforos.
-      * @return Lista de semaforos.
-      */
+
+    /**
+     * Regresa la lista de semaforos.
+     *
+     * @return Lista de semaforos.
+     */
     public List<Semaforo> getSemaforos() {
         return semaforos;
     }
@@ -158,6 +162,5 @@ public class ClienteGPS {
     public void setActualizable(FrameMain actualizable) {
         this.actualizable = actualizable;
     }
-    
-    
+
 }

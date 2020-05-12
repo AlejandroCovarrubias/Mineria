@@ -13,17 +13,16 @@ import java.awt.geom.Rectangle2D;
  * @author Home
  */
 public class SemaforoGrafico {
+
     Semaforo semaforo;
 
     public SemaforoGrafico(Semaforo semaforo) {
         this.semaforo = semaforo;
     }
-    
-    
-    
-    public ComponenteMapa dibujar(){
+
+    public ComponenteMapa dibujar() {
         Color color = null;
-        switch(semaforo.getEstado()){
+        switch (semaforo.getEstado()) {
             case "VERDE":
                 color = Color.GREEN;
                 break;
@@ -33,12 +32,13 @@ public class SemaforoGrafico {
             case "ROJO":
                 color = Color.RED;
                 break;
-                
+
         }
-        
-        if(color == null)
+
+        if (color == null) {
             return null;
-        
+        }
+
         return new ComponenteMapa(new Rectangle2D.Double(semaforo.getX(), semaforo.getY(), 50, 50), color, semaforo.getIdentificador());
     }
 }

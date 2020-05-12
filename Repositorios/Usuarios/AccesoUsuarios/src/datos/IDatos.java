@@ -18,4 +18,5 @@ public interface IDatos {
     void eliminarUsuario(int idusuario) throws Exception;
     List<Usuario> obtenerUsuarios() throws Exception;
     Usuario obtenerUsuario(int idusuario) throws Exception;
+    Usuario validar(String correo, String contrasenia) throws Exception;
 }

@@ -33,7 +33,7 @@ public class REST_Usuarios {
 
     @Context
     private UriInfo context;
-    
+
     private IDatos fachada = Datos.getFacade();
 
     /**
@@ -51,7 +51,7 @@ public class REST_Usuarios {
 
         System.out.println(correoElectronico);
         System.out.println(contrasenia);
-        
+
         if (correoElectronico.isEmpty()) {
             return Response
                     .status(Response.Status.UNAUTHORIZED)
@@ -66,18 +66,35 @@ public class REST_Usuarios {
                     .build();
         }
 
-        String token = JWTokenHelper.getInstance()
-                .crearToken(correoElectronico, contrasenia);
+        try {
+            Usuario validar = fachada.validar(correoElectronico, contrasenia);
+            System.out.println(validar);
 
-        return Response
-                .status(200)
-                .header("AUTORIZADO", "Haz sido autenticado de manera correcta")
-                .entity(token)
-                .build();
+            if (validar != null) {
+                String token = JWTokenHelper.getInstance()
+                        .crearToken(correoElectronico, contrasenia);
+
+                return Response
+                        .status(200)
+                        .header("AUTORIZADO", "Haz sido autenticado de manera correcta")
+                        .entity(token)
+                        .build();
+            }else{
+                return Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .header("NO AUTORIZADO", "Usuario no registrado")
+                    .build();
+            }
+        } catch (Exception ex) {
+            return Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .header("NO AUTORIZADO", "Usuario no registrado")
+                    .build();
+        }
     }
 
     @PUT
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cusuario")
     public Response crearUsuario(
@@ -90,9 +107,9 @@ public class REST_Usuarios {
             @QueryParam("contrasenia") String contrasenia) {
 
         Usuario usuario = new Usuario(
-                tipo, nombre, apellidos, edad, 
+                tipo, nombre, apellidos, edad,
                 telefono, correoElectronico, contrasenia);
-        
+
         try {
             fachada.crearUsuario(usuario);
         } catch (Exception ex) {
@@ -102,7 +119,7 @@ public class REST_Usuarios {
                     .header("Problemas en la BD", ex.getMessage())
                     .build();
         }
-        
+
         return Response
                 .status(Response.Status.OK)
                 .header("OK", "Usuario creado")
@@ -110,7 +127,7 @@ public class REST_Usuarios {
     }
 
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("eusuario")
     public Response editarUsuario(
@@ -119,14 +136,12 @@ public class REST_Usuarios {
             @QueryParam("nombre") String nombre,
             @QueryParam("apellidos") String apellidos,
             @QueryParam("edad") int edad,
-            @QueryParam("telefono") String telefono,
-            @QueryParam("correo") String correoElectronico,
-            @QueryParam("contrasenia") String contrasenia) {
+            @QueryParam("telefono") String telefono) {
 
         Usuario usuario = new Usuario(
-                idusuario, tipo, nombre, apellidos, edad, 
-                telefono, correoElectronico, contrasenia);
-        
+                idusuario, tipo, nombre, apellidos, edad,
+                telefono, "", "");
+
         try {
             fachada.editarUsuario(usuario);
         } catch (Exception ex) {
@@ -136,7 +151,7 @@ public class REST_Usuarios {
                     .header("Problemas en la BD", ex.getMessage())
                     .build();
         }
-        
+
         return Response
                 .status(Response.Status.OK)
                 .header("OK", "Usuario editado")
@@ -144,7 +159,7 @@ public class REST_Usuarios {
     }
 
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("dusuario")
     public Response eliminarUsuario(@QueryParam("idusuario") int idusuario) {
@@ -157,7 +172,7 @@ public class REST_Usuarios {
                     .header("Problemas en la BD", ex.getMessage())
                     .build();
         }
-        
+
         return Response
                 .status(Response.Status.OK)
                 .header("OK", "Usuario eliminado")
@@ -170,7 +185,7 @@ public class REST_Usuarios {
     @Path("usuario")
     public Response obtenerUsuario(@QueryParam("idusuario") int idusuario) {
         Usuario usuario = null;
-        
+
         try {
             usuario = fachada.obtenerUsuario(idusuario);
         } catch (Exception ex) {
@@ -180,7 +195,7 @@ public class REST_Usuarios {
                     .header("Problemas en la BD", ex.getMessage())
                     .build();
         }
-        
+
         return Response
                 .status(Response.Status.OK)
                 .header("OK", "Usuario obtenido")
@@ -193,7 +208,7 @@ public class REST_Usuarios {
     @Path("usuarios")
     public Response obtenerUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
-        
+
         try {
             usuarios = fachada.obtenerUsuarios();
         } catch (Exception ex) {
@@ -203,7 +218,7 @@ public class REST_Usuarios {
                     .header("Problemas en la BD", ex.getMessage())
                     .build();
         }
-        
+
         return Response
                 .status(Response.Status.OK)
                 .header("OK", "Usuarios obtenidos")

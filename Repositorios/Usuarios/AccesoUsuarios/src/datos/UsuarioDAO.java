@@ -50,10 +50,8 @@ class UsuarioDAO extends DAOREST<Usuario>{
                 + "nombre='"+ entidad.getNombre() +"', "
                 + "apellidos='"+ entidad.getApellidos() +"', "
                 + "edad='"+ entidad.getEdad() +"', "
-                + "telefono='"+ entidad.getTelefono() +"', "
-                + "correoElectronico='"+ entidad.getCorreoElectronico() +"', "
-                + "contrasenia='"+ entidad.getContrasenia() +"' "
-                + "WHERE idusuario = "+ entidad.getIDUsuario();
+                + "telefono='"+ entidad.getTelefono() +"' "
+                + "WHERE idusuario = " + entidad.getIDUsuario();
         
         Statement stmt;
         
@@ -77,7 +75,26 @@ class UsuarioDAO extends DAOREST<Usuario>{
         }catch(SQLException ex){
             throw new Exception(ex.getMessage());
         }
+    }
     
+    Usuario validar(String correo, String contrasenia) throws Exception{
+       String sql = "SELECT * FROM usuarios_api.usuarios WHERE correoElectronico = '" + correo
+               + "' AND contrasenia = '" + contrasenia
+               + "' AND tipo = 'GERENCIAL'";
+    
+        Statement stmt;
+        ResultSet rs;
+        
+        try{
+            stmt = Conexion.getInstance().createStatement();
+            rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                return transformar(rs);
+            }
+        }catch(SQLException ex){
+            throw new Exception(ex.getMessage());
+        }
+        return null; 
     }
 
     @Override
