@@ -5,8 +5,8 @@
  */
 package datos;
 
-import usuarios.Usuario;
 import java.util.List;
+import objetos.Congestion;
 
 /**
  *
@@ -14,59 +14,15 @@ import java.util.List;
  */
 class FDatos implements IDatos {
     
-    UsuarioDAO usuarios = new UsuarioDAO();
+    CongestionesDAO congestiones = new CongestionesDAO();
 
     @Override
-    public void crearUsuario(Usuario usuario) throws Exception {
-        try {
-            usuarios.crear(usuario);
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
-        }
+    public void crearCongestion(Congestion congestion) throws Exception {
+        congestiones.crear(congestion);
     }
 
     @Override
-    public void editarUsuario(Usuario usuario) throws Exception {
-        try {
-            usuarios.editar(usuario);
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
-        }
-    }
-
-    @Override
-    public void eliminarUsuario(int idusuario) throws Exception {
-        try {
-            usuarios.eliminar(idusuario);
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
-        }
-    }
-
-    @Override
-    public List<Usuario> obtenerUsuarios() throws Exception {
-        try {
-            return usuarios.obtenerTodos();
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
-        }
-    }
-
-    @Override
-    public Usuario obtenerUsuario(int idusuario) throws Exception {
-        try {
-            return usuarios.obtener(idusuario);
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
-        }
-    }
-
-    @Override
-    public Usuario validar(String correo, String contrasenia) throws Exception {
-        try {
-            return usuarios.validar(correo, contrasenia);
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
-        }
+    public List<Congestion> obtenerCongestiones() throws Exception {
+        return congestiones.obtenerTodos();
     }
 }

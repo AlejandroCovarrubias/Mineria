@@ -52,7 +52,6 @@ public class JWTokenHelper {
         Algorithm algorithm = Algorithm.HMAC256(PRIVATE_KEY);
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer("auth0").build();
-
     }
 
     private Date getFechaDeExpiracion() {

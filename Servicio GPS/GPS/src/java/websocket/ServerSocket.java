@@ -7,8 +7,8 @@ package websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import interfaz.INotificaciones;
-import notificacion.Notificaciones;
+import conexion.INotificaciones;
+import conexion.Notificaciones;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -6,17 +6,14 @@
 package datos;
 
 import java.util.List;
-import usuarios.Usuario;
+import objetos.Congestion;
+
 
 /**
  *
  * @author Alejandro Galindo
  */
 public interface IDatos {
-    void crearUsuario(Usuario usuario) throws Exception;
-    void editarUsuario(Usuario usuario) throws Exception;
-    void eliminarUsuario(int idusuario) throws Exception;
-    List<Usuario> obtenerUsuarios() throws Exception;
-    Usuario obtenerUsuario(int idusuario) throws Exception;
-    Usuario validar(String correo, String contrasenia) throws Exception;
+    void crearCongestion(Congestion congestion) throws Exception;
+    List<Congestion> obtenerCongestiones() throws Exception;
 }

@@ -361,6 +361,16 @@ public class PnlUsuario extends javax.swing.JPanel {
 
                 if (eliminar) {
                     JOptionPane.showMessageDialog(parent, "Usuario eliminado con exito", "RESULTADO", JOptionPane.INFORMATION_MESSAGE);
+                    tid.setText("");
+                    ttipo.setSelectedIndex(0);
+                    tnombre.setText("");
+                    tapellidos.setText("");
+                    tedad.setText("");
+                    ttelefono.setText("");
+                    tcorreo.setText("");
+                    tcorreo.setEnabled(true);
+                    tcontrasenia.setText("");
+                    tcontrasenia.setEnabled(true);
                 } else {
                     JOptionPane.showMessageDialog(parent, "Error. Usuario no eliminado", "RESULTADO", JOptionPane.ERROR_MESSAGE);
                 }
@@ -390,7 +400,7 @@ public class PnlUsuario extends javax.swing.JPanel {
                 tcorreo.setEnabled(false);
                 tcontrasenia.setText("");
                 tcontrasenia.setEnabled(false);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(parent, "No se ha encontrado a un usuario con el ID indicado", "SIN RESPUESTA", JOptionPane.INFORMATION_MESSAGE);
             }
 

@@ -93,7 +93,7 @@ public class REST_Usuarios {
         }
     }
 
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cusuario")
@@ -126,7 +126,7 @@ public class REST_Usuarios {
                 .build();
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("eusuario")
@@ -158,7 +158,7 @@ public class REST_Usuarios {
                 .build();
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("dusuario")
@@ -200,29 +200,6 @@ public class REST_Usuarios {
                 .status(Response.Status.OK)
                 .header("OK", "Usuario obtenido")
                 .entity(usuario)
-                .build();
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("usuarios")
-    public Response obtenerUsuarios() {
-        List<Usuario> usuarios = new ArrayList<>();
-
-        try {
-            usuarios = fachada.obtenerUsuarios();
-        } catch (Exception ex) {
-            //No se si seria la response adecuada
-            return Response
-                    .status(Response.Status.CONFLICT)
-                    .header("Problemas en la BD", ex.getMessage())
-                    .build();
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .header("OK", "Usuarios obtenidos")
-                .entity(usuarios)
                 .build();
     }
 }

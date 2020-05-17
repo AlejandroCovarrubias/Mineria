@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package notificacion;
+package conexion;
 
-import conexion.ClienteREST_Notificaciones;
-import interfaz.INotificaciones;
+import conexion.REST_CongestionesClient;
+import conexion.INotificaciones;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import objetos.Congestion;
 import objetos.Semaforo;
@@ -18,9 +21,13 @@ import objetos.Vehiculo;
  * @author Home
  */
 public class Notificaciones implements INotificaciones{
-    private ClienteREST_Notificaciones rest;
+    private REST_CongestionesClient rest;
     private List<Vehiculo> vehiculos;
     private List<Semaforo> semaforos;
+    private boolean autenticado = false;
+    
+    private String IDENTIFICADOR = "SISTEMAGPS";
+    private String PASSWORD = "mineria1234";
     
     // debug
     int count = 0;
@@ -28,11 +35,11 @@ public class Notificaciones implements INotificaciones{
     public Notificaciones() {
         vehiculos = new ArrayList<>();
         semaforos = new ArrayList<>();
-        rest = new ClienteREST_Notificaciones();
+        rest = new REST_CongestionesClient();
+        //quiza aqui no es buen lugar para autenticar
+        //autenticado = rest.autenticar(IDENTIFICADOR, PASSWORD);
     }
-    
-    
-    
+
     @Override
     public void agregarVehiculo(Vehiculo v){
         // Revisa si ya existe
@@ -64,11 +71,23 @@ public class Notificaciones implements INotificaciones{
         
         
         // Por ahora nadamas manda que si cada 20 veces que se revisa
+        // Importante seguir el formato de Datetime de MySQL para la fecha
+        // en String '2020-05-16 10:10:10'
         count++;
         if(count>19){
             count = 0;
-            Congestion g = new Congestion(50, 50, "Mucho movimiento", "Hoy", "Ahora");
+            
+            GregorianCalendar cl = new GregorianCalendar();
+            String fechaS = cl.get(GregorianCalendar.YEAR) + "-" +
+                    (cl.get(GregorianCalendar.MONTH) + 1) + "-" +
+                    cl.get(GregorianCalendar.DAY_OF_MONTH) + " " +
+                    cl.get(GregorianCalendar.HOUR) + ":" +
+                    cl.get(GregorianCalendar.MINUTE) + ":" +
+                    cl.get(GregorianCalendar.SECOND);
+            
+            Congestion g = new Congestion(50, 50, "Mucho movimiento", fechaS);
             lista.add( g );
+            
             // Manda al REST
             registrarCongestion(g);
         }
@@ -83,6 +102,27 @@ public class Notificaciones implements INotificaciones{
     @Override
     public void registrarCongestion(Congestion g) {
         // La manda con REST
-        rest.registrarCongestion(g);
+        
+        //Si no está autenticado
+        if(!autenticado){
+            //autentica 4 veces
+            
+            for (int i = 0; i < 4; i++) {
+                autenticado = rest.autenticar(IDENTIFICADOR, PASSWORD);
+                //Si autentica
+                if(autenticado){
+                    //Agrega congestion y concluye el metodo
+                    rest.agregarCongestion(g);
+                    return;
+                }
+            }
+            
+            //Si no autenticó en 4 intentos
+            System.out.println("No se pudo autenticar con la API de Congestiones");
+
+        //Si ya está autenticado (Tiene token)
+        }else{
+            rest.agregarCongestion(g);
+        }
     }
 }

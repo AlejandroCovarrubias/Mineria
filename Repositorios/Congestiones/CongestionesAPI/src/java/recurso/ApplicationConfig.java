@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author lv1013
  */
-@javax.ws.rs.ApplicationPath("usuariosAPI")
+@javax.ws.rs.ApplicationPath("congestionesAPI")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -30,7 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(recurso.FilterAuthentication.class);
-        resources.add(recurso.REST_Usuarios.class);
+        resources.add(recurso.REST_Congestiones.class);
     }
     
 }

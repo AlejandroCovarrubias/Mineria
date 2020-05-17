@@ -5,6 +5,8 @@
  */
 package objetos;
 
+import java.util.Date;
+
 /**
  * Representa una congestión (Una acumulación del tráfico determinada por el 
  * GPS).
@@ -12,12 +14,11 @@ package objetos;
  * @author Equipo Mina.
  */
 public class Congestion {
-    private int x;
-    private int y;
+    private int idCongestion;
+    private double x;
+    private double y;
     private String descripcion;
-    private String fecha;
-    private String hora;
-
+    private String fechaHora;
     /**
      * Constructor por omision.
      */
@@ -31,14 +32,28 @@ public class Congestion {
      * @param y Coordenada en Y.
      * @param descripcion Descripcion.
      * @param fecha Fecha.
-     * @param hora Hora.
      */
-    public Congestion(int x, int y, String descripcion, String fecha, String hora) {
+    public Congestion(double x, double y, String descripcion, String fecha) {
         this.x = x;
         this.y = y;
         this.descripcion = descripcion;
-        this.fecha = fecha;
-        this.hora = hora;
+        this.fechaHora = fecha;
+    }
+
+    public Congestion(int idCongestion, double x, double y, String descripcion, String fecha) {
+        this.idCongestion = idCongestion;
+        this.x = x;
+        this.y = y;
+        this.descripcion = descripcion;
+        this.fechaHora = fecha;
+    }
+
+    public int getIdCongestion() {
+        return idCongestion;
+    }
+
+    public void setIdCongestion(int idCongestion) {
+        this.idCongestion = idCongestion;
     }
     
     /**
@@ -46,7 +61,7 @@ public class Congestion {
      * 
      * @return Coordenada en X.
      */
-    public int getX() {
+    public double getX() {
         return x;
     }
 
@@ -64,7 +79,7 @@ public class Congestion {
      * 
      * @return Coordenada en Y.
      */
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -95,49 +110,16 @@ public class Congestion {
         this.descripcion = descripcion;
     }
 
-    /**
-     * Regresa la fecha.
-     * 
-     * @return Fecha.
-     */
-    public String getFecha() {
-        return fecha;
+    public String getFechaHora() {
+        return fechaHora;
     }
 
-    /**
-     * Establece la fecha.
-     * 
-     * @param fecha Fecha.
-     */
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFechaHora(String fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
-    /**
-     * Regresa la hora.
-     * 
-     * @return Hora.
-     */
-    public String getHora() {
-        return hora;
-    }
-
-    /**
-     * Establece la hora.
-     * 
-     * @param hora Hora.
-     */
-    public void setHora(String hora) {
-        this.hora = hora;
-    }
-
-    /**
-     * Regresa todos los atributos en una cadena de caracteres.
-     * 
-     * @return Cadena de caracteres.
-     */
     @Override
     public String toString() {
-        return "Congestion{" + "x=" + x + ", y=" + y + ", descripcion=" + descripcion + ", fecha=" + fecha + ", hora=" + hora + '}';
+        return "Congestion{" + "idCongestion=" + idCongestion + ", x=" + x + ", y=" + y + ", descripcion=" + descripcion + ", fecha=" + fechaHora + '}';
     }
 }

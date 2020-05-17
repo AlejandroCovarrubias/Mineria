@@ -14,9 +14,6 @@ import java.util.List;
  */
 abstract class DAOREST<T> {
     abstract void crear(T entidad) throws Exception;
-    abstract void editar(T entidad) throws Exception;
-    abstract void eliminar(int identificador) throws Exception;
-    abstract T obtener(int identificador) throws Exception;
     abstract List<T> obtenerTodos() throws Exception;
     abstract T transformar(ResultSet rs) throws Exception; 
 }

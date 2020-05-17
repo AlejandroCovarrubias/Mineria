@@ -3,7 +3,7 @@
  * 
  * Creada el 20/04/2020 a las 07:25PM
  */
-package interfaz;
+package conexion;
 
 import java.util.List;
 import objetos.Congestion;

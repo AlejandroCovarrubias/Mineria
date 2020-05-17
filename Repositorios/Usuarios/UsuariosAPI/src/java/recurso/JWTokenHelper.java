@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class JWTokenHelper {
 
     private static JWTokenHelper jwTokenHelper;
-    private static final long EXPIRATION_LIMIT = 60;
+    private static final long EXPIRATION_LIMIT = 120;
     private static final String PRIVATE_KEY = "mineria";
 
     private JWTokenHelper() {

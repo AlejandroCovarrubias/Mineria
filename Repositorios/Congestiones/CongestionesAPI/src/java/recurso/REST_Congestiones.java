@@ -6,6 +6,12 @@
 package recurso;
 
 import datos.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,20 +22,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import usuarios.Usuario;
+import objetos.Congestion;
 
 /**
  * REST Web Service
  *
  * @author Alejandro Galindo
  */
-@Path("/usuarios")
-public class REST_Usuarios {
+@Path("/congestiones")
+public class REST_Congestiones {
 
     @Context
     private UriInfo context;
@@ -39,81 +44,88 @@ public class REST_Usuarios {
     /**
      * Creates a new instance of REST_Usuarios
      */
-    public REST_Usuarios() {
+    public REST_Congestiones() {
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("login")
+    @Path("auth")
     public Response authorizationService(
-            @QueryParam("correo") String correoElectronico,
-            @QueryParam("contrasenia") String contrasenia) {
+            @QueryParam("identificador") String identificador,
+            @QueryParam("password") String password) {
 
-        System.out.println(correoElectronico);
-        System.out.println(contrasenia);
+        System.out.println(identificador);
+        System.out.println(password);
 
-        if (correoElectronico.isEmpty()) {
+        if (identificador.isEmpty()) {
             return Response
                     .status(Response.Status.UNAUTHORIZED)
-                    .header("NO AUTORIZADO", "Correo Electronico vacio")
+                    .header("NO AUTORIZADO", "Identificador Incorrecto")
                     .build();
         }
 
-        if (contrasenia.isEmpty()) {
+        if (password.isEmpty()) {
             return Response
                     .status(Response.Status.UNAUTHORIZED)
-                    .header("NO AUTORIZADO", "Contrasenia vacia")
+                    .header("NO AUTORIZADO", "Contrasenia Incorrecta")
                     .build();
         }
 
+        String st = null;
         try {
-            Usuario validar = fachada.validar(correoElectronico, contrasenia);
-            System.out.println(validar);
+            File file = new File("C:\\Users\\Alejandro Galindo\\Desktop\\Mineria\\Repositorios\\Congestiones\\CongestionesAPI\\src\\java\\recurso\\userslog.txt");
+            BufferedReader br = new BufferedReader(new FileReader(file));
 
-            if (validar != null) {
-                String token = JWTokenHelper.getInstance()
-                        .crearToken(correoElectronico, contrasenia);
+            st = br.readLine();
 
-                return Response
-                        .status(200)
-                        .header("AUTORIZADO", "Haz sido autenticado de manera correcta")
-                        .entity(token)
-                        .build();
-            }else{
-                return Response
-                    .status(Response.Status.UNAUTHORIZED)
-                    .header("NO AUTORIZADO", "Usuario no registrado")
-                    .build();
-            }
-        } catch (Exception ex) {
-            return Response
-                    .status(Response.Status.UNAUTHORIZED)
-                    .header("NO AUTORIZADO", "Usuario no registrado")
-                    .build();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(REST_Congestiones.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(REST_Congestiones.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        if (st != null) {
+            String[] autorizados = st.split(";");
+
+            for (String auth : autorizados) {
+                String[] idpass = auth.split(",");
+                
+                if (idpass[0].equals(identificador) && idpass[1].equals(password)) {
+
+                    String token = JWTokenHelper.getInstance()
+                            .crearToken(identificador, password);
+
+                    return Response
+                            .status(200)
+                            .header("AUTORIZADO", "Haz sido autenticado")
+                            .entity(token)
+                            .build();
+                }
+            }
+        }
+
+        return Response
+                .status(Response.Status.UNAUTHORIZED)
+                .header("NO AUTORIZADO", "Usuario o contrasenia incorrecta")
+                .build();
     }
 
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("cusuario")
-    public Response crearUsuario(
-            @QueryParam("tipo") String tipo,
-            @QueryParam("nombre") String nombre,
-            @QueryParam("apellidos") String apellidos,
-            @QueryParam("edad") int edad,
-            @QueryParam("telefono") String telefono,
-            @QueryParam("correo") String correoElectronico,
-            @QueryParam("contrasenia") String contrasenia) {
-
-        Usuario usuario = new Usuario(
-                tipo, nombre, apellidos, edad,
-                telefono, correoElectronico, contrasenia);
+    @Path("congestion")
+    public Response agregarCongestion(
+            @QueryParam("posx") double x,
+            @QueryParam("posy") double y,
+            @QueryParam("descripcion") String descripcion,
+            @QueryParam("fecha") String stringfecha) {
 
         try {
-            fachada.crearUsuario(usuario);
-        } catch (Exception ex) {
+            Congestion congestion = new Congestion(x, y, descripcion, stringfecha);
+            fachada.crearCongestion(congestion);
+        }  catch (Exception ex) {
             //No se si seria la response adecuada
+            System.out.println(ex.getMessage());
             return Response
                     .status(Response.Status.CONFLICT)
                     .header("Problemas en la BD", ex.getMessage())
@@ -126,91 +138,14 @@ public class REST_Usuarios {
                 .build();
     }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("eusuario")
-    public Response editarUsuario(
-            @QueryParam("idusuario") int idusuario,
-            @QueryParam("tipo") String tipo,
-            @QueryParam("nombre") String nombre,
-            @QueryParam("apellidos") String apellidos,
-            @QueryParam("edad") int edad,
-            @QueryParam("telefono") String telefono) {
-
-        Usuario usuario = new Usuario(
-                idusuario, tipo, nombre, apellidos, edad,
-                telefono, "", "");
-
-        try {
-            fachada.editarUsuario(usuario);
-        } catch (Exception ex) {
-            //No se si seria la response adecuada
-            return Response
-                    .status(Response.Status.CONFLICT)
-                    .header("Problemas en la BD", ex.getMessage())
-                    .build();
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .header("OK", "Usuario editado")
-                .build();
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("dusuario")
-    public Response eliminarUsuario(@QueryParam("idusuario") int idusuario) {
-        try {
-            fachada.eliminarUsuario(idusuario);
-        } catch (Exception ex) {
-            //No se si seria la response adecuada
-            return Response
-                    .status(Response.Status.CONFLICT)
-                    .header("Problemas en la BD", ex.getMessage())
-                    .build();
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .header("OK", "Usuario eliminado")
-                .build();
-    }
-
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("usuario")
-    public Response obtenerUsuario(@QueryParam("idusuario") int idusuario) {
-        Usuario usuario = null;
-
-        try {
-            usuario = fachada.obtenerUsuario(idusuario);
-        } catch (Exception ex) {
-            //No se si seria la response adecuada
-            return Response
-                    .status(Response.Status.CONFLICT)
-                    .header("Problemas en la BD", ex.getMessage())
-                    .build();
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .header("OK", "Usuario obtenido")
-                .entity(usuario)
-                .build();
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("usuarios")
-    public Response obtenerUsuarios() {
-        List<Usuario> usuarios = new ArrayList<>();
+    @Path("congestion")
+    public Response obtenerCongestiones() {
+        List<Congestion> congestiones = new ArrayList<>();
 
         try {
-            usuarios = fachada.obtenerUsuarios();
+            congestiones = fachada.obtenerCongestiones();
         } catch (Exception ex) {
             //No se si seria la response adecuada
             return Response
@@ -222,7 +157,7 @@ public class REST_Usuarios {
         return Response
                 .status(Response.Status.OK)
                 .header("OK", "Usuarios obtenidos")
-                .entity(usuarios)
+                .entity(congestiones)
                 .build();
     }
 }

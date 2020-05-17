@@ -21,7 +21,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class FilterAuthentication implements ContainerRequestFilter {
 
-    public static final String AUTHENTICATION_SERVICE_PATH = "login";
+    public static final String AUTHENTICATION_SERVICE_PATH = "auth";
 
     @Override
     public void filter(ContainerRequestContext requestContext)
@@ -29,7 +29,7 @@ public class FilterAuthentication implements ContainerRequestFilter {
         String method = requestContext.getMethod();
         String path = requestContext.getUriInfo().getPath();
 
-        if (method.equals("POST") && path.contains("login")) {
+        if (method.equals("POST") && path.contains("auth")) {
             //verificar credenciales y generar token
             //No hace nada, lo acepta y el metodo authorizationService lo valida
             //y genera el token
