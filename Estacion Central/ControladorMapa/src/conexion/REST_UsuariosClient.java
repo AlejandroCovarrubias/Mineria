@@ -17,8 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.math.BigInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
 
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
@@ -73,86 +71,6 @@ public class REST_UsuariosClient {
         return false;
     }
 
-    public boolean crearUsuario(Usuario usuario) {
-        //cusuario
-
-        try {
-            //hash la pass
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-            md.update(usuario.getContrasenia().getBytes(StandardCharsets.UTF_8));
-            byte[] digest = md.digest();
-
-            usuario.setContrasenia(String.format("%064x", new BigInteger(1, digest)));
-
-            System.out.println(usuario.getContrasenia());
-
-            Response post = client.postUsuario(usuario, "cusuario", JWToken);
-
-            if (post != null) {
-
-                System.out.println(post);
-                System.out.println(post.getHeaders());
-
-                switch (post.getStatus()) {
-                    case 200:
-                        return true;
-                    case 401:
-                        return false;
-                    default:
-                        return false;
-                }
-            }
-
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(REST_UsuariosClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return false;
-    }
-
-    public boolean editarUsuario(Usuario usuario) {
-        Response put = client.putUsuario(usuario, "eusuario", JWToken);
-
-        if (put != null) {
-
-            System.out.println(put);
-            System.out.println(put.getHeaders());
-
-            switch (put.getStatus()) {
-                case 200:
-                    return true;
-                case 401:
-                    return false;
-                default:
-                    return false;
-            }
-        }
-        
-        return false;
-    }
-
-    public boolean eliminarUsuario(Usuario usuario) {
-        Response put = client.putUsuario(usuario, "dusuario", JWToken);
-
-        if (put != null) {
-
-            System.out.println(put);
-            System.out.println(put.getHeaders());
-
-            switch (put.getStatus()) {
-                case 200:
-                    return true;
-                case 401:
-                    return false;
-                default:
-                    return false;
-            }
-        }
-        
-        return false;
-    }
-
     public Usuario obtenerUsuario(String idUsuario) {
         Usuario json = client.getJson(Usuario.class, "usuario", idUsuario, JWToken);
         System.out.println(json);
@@ -197,52 +115,6 @@ public class REST_UsuariosClient {
             return newTarget.request().post(null, Response.class);
         }
         
-        public Response postUsuario(Object requestEntity, String specificPath, String JWToken) throws ClientErrorException {
-            Usuario tempEntity = (Usuario) requestEntity;
-            WebTarget newTarget = webTarget.path(specificPath)
-                    .queryParam("tipo", tempEntity.getTipo())
-                    .queryParam("nombre", tempEntity.getNombre())
-                    .queryParam("apellidos", tempEntity.getApellidos())
-                    .queryParam("edad", tempEntity.getEdad())
-                    .queryParam("telefono", tempEntity.getTelefono())
-                    .queryParam("correo", tempEntity.getCorreoElectronico())
-                    .queryParam("contrasenia", tempEntity.getContrasenia());
-
-            return newTarget.request()
-                    .header("login", JWToken)
-                    .post(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
-        }
-
-        public Response putUsuario(Object requestEntity, String specificPath, String JWToken) throws ClientErrorException {
-            Usuario tempEntity = (Usuario) requestEntity;
-            WebTarget newTarget;
-            
-            if(specificPath.equals("eusuario")){
-                newTarget = webTarget.path(specificPath)
-                    .queryParam("idusuario", tempEntity.getIDUsuario())
-                    .queryParam("tipo", tempEntity.getTipo())
-                    .queryParam("nombre", tempEntity.getNombre())
-                    .queryParam("apellidos", tempEntity.getApellidos())
-                    .queryParam("edad", tempEntity.getEdad())
-                    .queryParam("telefono", tempEntity.getTelefono());
-                
-                return newTarget.request()
-                    .header("login", JWToken)
-                    .put(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
-                
-            }else if (specificPath.equals("dusuario")){
-                newTarget = webTarget.path(specificPath)
-                    .queryParam("idusuario", tempEntity.getIDUsuario());
-                
-                return newTarget.request()
-                    .header("login", JWToken)
-                    .put(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
-                
-            }
-            
-            return null;
-        }
-
         public <T> T getJson(Class<T> responseType, String specificPath, String id, String JWToken) throws ClientErrorException {
             WebTarget newTarget = webTarget.path(specificPath)
                     .queryParam("idusuario", id);
