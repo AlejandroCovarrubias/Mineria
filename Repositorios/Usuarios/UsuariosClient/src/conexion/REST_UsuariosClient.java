@@ -137,14 +137,14 @@ public class REST_UsuariosClient {
     }
 
     public boolean eliminarUsuario(Usuario usuario) {
-        Response put = client.putUsuario(usuario, JWToken);
+        Response del = client.deleteUsuario(usuario, JWToken);
 
-        if (put != null) {
+        if (del != null) {
 
-            System.out.println(put);
-            System.out.println(put.getHeaders());
+            System.out.println(del);
+            System.out.println(del.getHeaders());
 
-            switch (put.getStatus()) {
+            switch (del.getStatus()) {
                 case 200:
                     return true;
                 case 401:
@@ -243,7 +243,7 @@ public class REST_UsuariosClient {
                 
                 return newTarget.request()
                     .header("login", JWToken)
-                    .put(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
+                    .delete();
         }
 
         public <T> T getJson(Class<T> responseType, String id, String JWToken) throws ClientErrorException {
