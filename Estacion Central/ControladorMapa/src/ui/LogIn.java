@@ -6,6 +6,7 @@
 package ui;
 
 import conexion.REST_UsuariosClient;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**

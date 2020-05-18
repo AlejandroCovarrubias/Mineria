@@ -6,14 +6,11 @@
 package recurso;
 
 import datos.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -78,6 +75,7 @@ public class REST_Usuarios {
                         .status(200)
                         .header("AUTORIZADO", "Haz sido autenticado de manera correcta")
                         .entity(token)
+                        .header("tipo", validar.getTipo())
                         .build();
             }else{
                 return Response
@@ -86,6 +84,7 @@ public class REST_Usuarios {
                     .build();
             }
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             return Response
                     .status(Response.Status.UNAUTHORIZED)
                     .header("NO AUTORIZADO", "Usuario no registrado")
@@ -96,7 +95,6 @@ public class REST_Usuarios {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("cusuario")
     public Response crearUsuario(
             @QueryParam("tipo") String tipo,
             @QueryParam("nombre") String nombre,
@@ -129,7 +127,6 @@ public class REST_Usuarios {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("eusuario")
     public Response editarUsuario(
             @QueryParam("idusuario") int idusuario,
             @QueryParam("tipo") String tipo,
@@ -158,10 +155,9 @@ public class REST_Usuarios {
                 .build();
     }
 
-    @PUT
+    @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("dusuario")
     public Response eliminarUsuario(@QueryParam("idusuario") int idusuario) {
         try {
             fachada.eliminarUsuario(idusuario);
@@ -182,7 +178,6 @@ public class REST_Usuarios {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("usuario")
     public Response obtenerUsuario(@QueryParam("idusuario") int idusuario) {
         Usuario usuario = null;
 

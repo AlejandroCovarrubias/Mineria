@@ -73,7 +73,7 @@ public class REST_Congestiones {
 
         String st = null;
         try {
-            File file = new File("C:\\Users\\Alejandro Galindo\\Desktop\\Mineria\\Repositorios\\Congestiones\\CongestionesAPI\\src\\java\\recurso\\userslog.txt");
+            File file = new File("C:\\Users\\Home\\Documents\\Mineria\\Repositorios\\Congestiones\\CongestionesAPI\\src\\java\\recurso\\userslog.txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
 
             st = br.readLine();
@@ -113,7 +113,6 @@ public class REST_Congestiones {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("congestion")
     public Response agregarCongestion(
             @QueryParam("posx") double x,
             @QueryParam("posy") double y,
@@ -140,7 +139,6 @@ public class REST_Congestiones {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("congestion")
     public Response obtenerCongestiones() {
         List<Congestion> congestiones = new ArrayList<>();
 

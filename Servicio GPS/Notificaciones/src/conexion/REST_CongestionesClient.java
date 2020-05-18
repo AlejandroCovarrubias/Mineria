@@ -76,7 +76,7 @@ public class REST_CongestionesClient {
 
     public boolean agregarCongestion(Congestion congestion) {
 
-        Response post = client.postCongestion(congestion, "congestion", JWToken);
+        Response post = client.postCongestion(congestion, JWToken);
 
         if (post != null) {
 
@@ -141,9 +141,9 @@ public class REST_CongestionesClient {
             return newTarget.request().post(null, Response.class);
         }
 
-        public Response postCongestion(Object requestEntity, String specificPath, String JWToken) throws ClientErrorException {
+        public Response postCongestion(Object requestEntity, String JWToken) throws ClientErrorException {
             Congestion tempEntity = (Congestion) requestEntity;
-            WebTarget newTarget = webTarget.path(specificPath)
+            WebTarget newTarget = webTarget
                     .queryParam("posx", tempEntity.getX())
                     .queryParam("posy", tempEntity.getY())
                     .queryParam("descripcion", tempEntity.getDescripcion())
@@ -154,8 +154,8 @@ public class REST_CongestionesClient {
                     .post(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
         }
 
-        public <T> T getJson(Class<T> responseType, String specificPath, String id, String JWToken) throws ClientErrorException {
-            WebTarget newTarget = webTarget.path(specificPath)
+        public <T> T getJson(Class<T> responseType, String id, String JWToken) throws ClientErrorException {
+            WebTarget newTarget = webTarget
                     .queryParam("idusuario", id);
 
             return newTarget.request()

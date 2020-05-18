@@ -159,6 +159,11 @@ public class PnlUsuario extends javax.swing.JPanel {
         jLabel10.setText("Contraseña:");
 
         ttipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "GERENCIAL", "OPERADOR" }));
+        ttipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ttipoActionPerformed(evt);
+            }
+        });
 
         bLimpiar.setFont(new java.awt.Font("Lato", 0, 11)); // NOI18N
         bLimpiar.setText("LIMPIAR");
@@ -421,6 +426,10 @@ public class PnlUsuario extends javax.swing.JPanel {
         tcontrasenia.setText("");
         tcontrasenia.setEnabled(true);
     }//GEN-LAST:event_bLimpiarActionPerformed
+
+    private void ttipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ttipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ttipoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

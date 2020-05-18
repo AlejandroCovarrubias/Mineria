@@ -51,9 +51,13 @@ public class REST_UsuariosClient {
             Response postAuth = client.postAuth(correo, hashPass, "login");
 
             if (postAuth != null) {
-
+                
                 switch (postAuth.getStatus()) {
                     case 200:
+                        // Revisa que sea tipo general
+                        String tipo = postAuth.getHeaderString("tipo");
+                        if(!tipo.equals("GERENCIAL"))
+                            return false;
                         JWToken = postAuth.readEntity(String.class);
                         System.out.println(JWToken);
                         return true;
@@ -87,7 +91,7 @@ public class REST_UsuariosClient {
 
             System.out.println(usuario.getContrasenia());
 
-            Response post = client.postUsuario(usuario, "cusuario", JWToken);
+            Response post = client.postUsuario(usuario, JWToken);
 
             if (post != null) {
 
@@ -112,7 +116,7 @@ public class REST_UsuariosClient {
     }
 
     public boolean editarUsuario(Usuario usuario) {
-        Response put = client.putUsuario(usuario, "eusuario", JWToken);
+        Response put = client.putUsuario(usuario, JWToken);
 
         if (put != null) {
 
@@ -133,7 +137,7 @@ public class REST_UsuariosClient {
     }
 
     public boolean eliminarUsuario(Usuario usuario) {
-        Response put = client.putUsuario(usuario, "dusuario", JWToken);
+        Response put = client.putUsuario(usuario, JWToken);
 
         if (put != null) {
 
@@ -154,7 +158,7 @@ public class REST_UsuariosClient {
     }
 
     public Usuario obtenerUsuario(String idUsuario) {
-        Usuario json = client.getJson(Usuario.class, "usuario", idUsuario, JWToken);
+        Usuario json = client.getJson(Usuario.class, idUsuario, JWToken);
         System.out.println(json);
         return json;
     }
@@ -197,9 +201,9 @@ public class REST_UsuariosClient {
             return newTarget.request().post(null, Response.class);
         }
         
-        public Response postUsuario(Object requestEntity, String specificPath, String JWToken) throws ClientErrorException {
+        public Response postUsuario(Object requestEntity, String JWToken) throws ClientErrorException {
             Usuario tempEntity = (Usuario) requestEntity;
-            WebTarget newTarget = webTarget.path(specificPath)
+            WebTarget newTarget = webTarget
                     .queryParam("tipo", tempEntity.getTipo())
                     .queryParam("nombre", tempEntity.getNombre())
                     .queryParam("apellidos", tempEntity.getApellidos())
@@ -213,12 +217,11 @@ public class REST_UsuariosClient {
                     .post(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
         }
 
-        public Response putUsuario(Object requestEntity, String specificPath, String JWToken) throws ClientErrorException {
+        public Response putUsuario(Object requestEntity, String JWToken) throws ClientErrorException {
             Usuario tempEntity = (Usuario) requestEntity;
             WebTarget newTarget;
             
-            if(specificPath.equals("eusuario")){
-                newTarget = webTarget.path(specificPath)
+                newTarget = webTarget
                     .queryParam("idusuario", tempEntity.getIDUsuario())
                     .queryParam("tipo", tempEntity.getTipo())
                     .queryParam("nombre", tempEntity.getNombre())
@@ -229,22 +232,22 @@ public class REST_UsuariosClient {
                 return newTarget.request()
                     .header("login", JWToken)
                     .put(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
-                
-            }else if (specificPath.equals("dusuario")){
-                newTarget = webTarget.path(specificPath)
+        }
+        
+        public Response deleteUsuario(Object requestEntity, String JWToken) throws ClientErrorException {
+            Usuario tempEntity = (Usuario) requestEntity;
+            WebTarget newTarget;
+            
+            newTarget = webTarget
                     .queryParam("idusuario", tempEntity.getIDUsuario());
                 
                 return newTarget.request()
                     .header("login", JWToken)
                     .put(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
-                
-            }
-            
-            return null;
         }
 
-        public <T> T getJson(Class<T> responseType, String specificPath, String id, String JWToken) throws ClientErrorException {
-            WebTarget newTarget = webTarget.path(specificPath)
+        public <T> T getJson(Class<T> responseType, String id, String JWToken) throws ClientErrorException {
+            WebTarget newTarget = webTarget
                     .queryParam("idusuario", id);
 
             return newTarget.request()
@@ -256,4 +259,5 @@ public class REST_UsuariosClient {
             client.close();
         }
     }
+
 }

@@ -52,6 +52,10 @@ public class REST_UsuariosClient {
 
                 switch (postAuth.getStatus()) {
                     case 200:
+                        // Revisa que sea tipo general
+                        String tipo = postAuth.getHeaderString("tipo");
+                        if(!tipo.equals("GERENCIAL"))
+                            return false;
                         JWToken = postAuth.readEntity(String.class);
                         System.out.println(JWToken);
                         return true;
@@ -70,17 +74,6 @@ public class REST_UsuariosClient {
         }
         return false;
     }
-
-    public Usuario obtenerUsuario(String idUsuario) {
-        Usuario json = client.getJson(Usuario.class, "usuario", idUsuario, JWToken);
-        System.out.println(json);
-        return json;
-    }
-
-    public List<Usuario> obtenerUsuarios() {
-        return null;
-    }
-
     static class REST_Usuarios_JerseyClient {
 
         private WebTarget webTarget;
@@ -113,15 +106,6 @@ public class REST_UsuariosClient {
                     .queryParam("contrasenia", pass);
 
             return newTarget.request().post(null, Response.class);
-        }
-        
-        public <T> T getJson(Class<T> responseType, String specificPath, String id, String JWToken) throws ClientErrorException {
-            WebTarget newTarget = webTarget.path(specificPath)
-                    .queryParam("idusuario", id);
-
-            return newTarget.request()
-                    .header("login", JWToken)
-                    .get(responseType);
         }
 
         public void close() {
