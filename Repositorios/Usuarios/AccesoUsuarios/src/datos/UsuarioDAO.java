@@ -80,7 +80,7 @@ class UsuarioDAO extends DAOREST<Usuario>{
     Usuario validar(String correo, String contrasenia) throws Exception{
        String sql = "SELECT * FROM usuarios_api.usuarios WHERE correoElectronico = '" + correo
                + "' AND contrasenia = '" + contrasenia
-               + "' AND tipo = 'GERENCIAL'";
+               + "'";
     
         Statement stmt;
         ResultSet rs;

@@ -113,7 +113,6 @@ public class REST_Congestiones {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("congestion")
     public Response agregarCongestion(
             @QueryParam("posx") double x,
             @QueryParam("posy") double y,
@@ -140,7 +139,6 @@ public class REST_Congestiones {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("congestion")
     public Response obtenerCongestiones() {
         List<Congestion> congestiones = new ArrayList<>();
 

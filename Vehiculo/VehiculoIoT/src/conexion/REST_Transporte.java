@@ -7,9 +7,14 @@ package conexion;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import objetos.Transporte;
+import org.glassfish.grizzly.ssl.SSLContextConfigurator;
+import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
+import org.glassfish.tyrus.client.ClientProperties;
 
 /**
  * Clase para la comunicación al servidor REST de la base de datos, para 
@@ -20,12 +25,17 @@ import objetos.Transporte;
 public class REST_Transporte {
     
         private REST_Transporte_JerseyClient client;
+        private String JWToken = "";
 
         /**
          * Constructor que inicializa el cliente REST.
          */
         public REST_Transporte() {
             client = new REST_Transporte_JerseyClient();
+        }
+
+        public void setJWToken(String JWToken) {
+            this.JWToken = JWToken;
         }
         
         /**
@@ -34,8 +44,21 @@ public class REST_Transporte {
          * @param transporte Transporte.
          */
         public void registrarTransporte(Transporte transporte){
-            client.postTransporte(transporte);
-            System.out.println("Registrado Transporte en REST!");
+            Response post = client.postTransporte(transporte, JWToken);
+
+            if (post != null) {
+
+                System.out.println(post);
+                System.out.println(post.getHeaders());
+
+                switch (post.getStatus()) {
+                    case 200:
+                        System.out.println("Registrado el transporte!");
+                        break;
+                    default:
+                        System.out.println("Error al registrar transporte!");
+                }
+            }
         } 
     
     // Metodos default
@@ -43,24 +66,40 @@ public class REST_Transporte {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:8080/MinaDBAPI/webresources";
+        private static final String BASE_URI = "https://localhost:8443/TransportesAPI";
 
         public REST_Transporte_JerseyClient() {
-            client = javax.ws.rs.client.ClientBuilder.newClient();
-            webTarget = client.target(BASE_URI).path("transporte");
-        }
+            System.getProperties().put(SSLContextConfigurator.KEY_STORE_FILE, "src/conexion/keystore.jks");
+            System.getProperties().put(SSLContextConfigurator.TRUST_STORE_FILE, "src/conexion/keystore.jks");
+            System.getProperties().put(SSLContextConfigurator.KEY_STORE_PASSWORD, "mineria");
+            System.getProperties().put(SSLContextConfigurator.TRUST_STORE_PASSWORD, "mineria");
+            final SSLContextConfigurator defaultConfig = new SSLContextConfigurator();
 
-        public Response postTransporte(Object requestEntity) throws ClientErrorException {
-            return webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
-        }
+            defaultConfig.retrieve(System.getProperties());
+            // o establece SSLContextConfigurator usando su API.
 
-        public void putTransporte(Object requestEntity) throws ClientErrorException {
-            webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
-        }
+            SSLEngineConfigurator sslEngineConfigurator
+                    = new SSLEngineConfigurator(defaultConfig, true, false, false);
 
-        public <T> T getJson(Class<T> responseType) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+            client = javax.ws.rs.client.ClientBuilder
+                    .newClient()
+                    .property(ClientProperties.SSL_ENGINE_CONFIGURATOR, sslEngineConfigurator);
+
+            webTarget = client.target(BASE_URI).path("transportesAPI").path("transportes");
+        }
+        
+        public Response postTransporte(Object requestEntity, String JWToken) throws ClientErrorException {
+            Transporte tempEntity = (Transporte) requestEntity;
+            WebTarget newTarget = webTarget
+                    .queryParam("matriculavehiculo", tempEntity.getVehiculo().getMatricula())
+                    .queryParam("nombreentrega", tempEntity.getNombreDeQuienEntrega())
+                    .queryParam("material", tempEntity.getMaterial().getNombre())
+                    .queryParam("cantidad", tempEntity.getCantidad())
+                    .queryParam("medida", tempEntity.getMedida());
+
+            return newTarget.request()
+                    .header("auth", JWToken)
+                    .post(Entity.entity(tempEntity, MediaType.APPLICATION_JSON));
         }
 
         public void close() {

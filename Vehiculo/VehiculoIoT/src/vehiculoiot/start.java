@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import conexion.ClientGPSVehiculo;
 import conexion.REST_Transporte;
+import conexion.REST_UsuariosClient;
 import java.net.URI;
 import java.util.Random;
 import java.util.Scanner;
@@ -43,6 +44,7 @@ public class start {
 
         ClientGPSVehiculo gps = new ClientGPSVehiculo();
         REST_Transporte rest = new REST_Transporte();
+        REST_UsuariosClient auth = new REST_UsuariosClient();
         Session s = null;
         
         
@@ -78,19 +80,48 @@ public class start {
             System.out.println("No se pudo conectar...");
             System.exit(1);
         }
+        
+        Scanner sc = new Scanner(System.in);
 
+        // AUTENTIFICACION
+        System.out.println("Autentificacion, favor de ingresar los siguientes datos...");
+        int intentosAuth = 0;
+        int intentosAuthMax = 5;
+        while(intentosAuth<intentosAuthMax){
+            System.out.print("Correo electronico: ");
+            String correo = sc.nextLine();
+            System.out.print("Contrasena: ");
+            String pass = sc.nextLine();
+            
+            if(auth.autenticarUsuario(correo, pass)){
+                break;
+            }else{
+                System.out.println("Error en autentificacion, intente denuevo.");
+                intentosAuth++;
+            }
+            
+        }
+        
+        if(intentosAuth==intentosAuthMax){
+            System.out.println("Demasiados errores en autentificacion, terminando ejecucion...");
+            System.exit(1);
+        }
+        
+        // Manda el token al otro REST
+        rest.setJWToken(auth.getJWToken());
+        
+        
         System.out.println("Datos del vehiculo...");
 
         String matricula;
         String nombre;
-        String material; // Cambiar a material
+        String material; 
         double cantidad;
         String medida;
 
         int x;
         int y;
 
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("Matricula: ");
         matricula = sc.nextLine();
@@ -160,7 +191,7 @@ public class start {
                 e.printStackTrace();
             }
 
-            if (vueltas == 4) {
+            if (vueltas == 2) {
                 // Registra el transporte despues de varias vueltas
 
                 // Transforma a vehiculo de objetos mina
