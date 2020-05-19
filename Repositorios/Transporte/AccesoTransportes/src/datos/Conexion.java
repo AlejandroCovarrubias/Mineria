@@ -22,10 +22,10 @@ class Conexion {
 
     private static String servidor = "localhost"; //Nombre del servidor 
     private static String puerto = "3306"; //IP
-    private static String user = "minerio"; //usuario loggin
+    private static String user = "root"; //usuario loggin
     private static String password = "sesamo"; //Contraseña
     private static String baseDatos = "congestiones_api"; //Nombre de la base de datos
-    private static String dbURL = "jdbc:mysql://localhost:3306/congestiones_api";
+    private static String dbURL = "jdbc:mysql://localhost:3306/transportes_api";
     
     /**
      * Establece una conexion con la BD

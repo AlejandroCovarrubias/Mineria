@@ -73,7 +73,7 @@ public class REST_Congestiones {
 
         String st = null;
         try {
-            File file = new File("C:\\Users\\Home\\Documents\\Mineria\\Repositorios\\Congestiones\\CongestionesAPI\\src\\java\\recurso\\userslog.txt");
+            File file = new File("C:\\Users\\Alejandro Galindo\\Desktop\\Mineria\\Repositorios\\Congestiones\\CongestionesAPI\\src\\java\\recurso\\userslog.txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
 
             st = br.readLine();

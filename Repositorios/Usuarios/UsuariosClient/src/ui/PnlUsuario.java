@@ -29,7 +29,7 @@ public class PnlUsuario extends javax.swing.JPanel {
         this.parent = parent;
         this.cliente = cliente;
         this.setSize(349, 526);
-        tcontrasenia.setEnabled(false);
+        tcontrasenia.setEnabled(true);
     }
 
     /**
